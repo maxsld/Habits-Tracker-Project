@@ -9,3 +9,18 @@
 body {
     font-family: "Ubuntu", serif;
 }
+
+:root {
+    --global_primary_color : rgb(56, 83, 255);
+    --global_secondary_color : #1E1E1E;
+    --global_color_text : #000000;
+    --global_color_green : #3AC20D;
+    --global_color_red : #FF0C0C;
+    --global_color_orange : #FF7F00;
+    --global_color_yellow : #FFBB00;
+    --global_color_grey : #B3B3B3;
+
+    --global_border_radius : 1.2rem;
+  }
+
+
