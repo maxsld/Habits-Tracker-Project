@@ -1,0 +1,147 @@
+<script>
+    fetch('assets/global.html')
+      .then(response => response.text())
+      .then(data => {
+        document.head.insertAdjacentHTML('beforeend', data);
+      });
+  </script>
+
+
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" href="assets/css/signup.css">
+  </head>
+  <body>
+    <div class="connect">
+        <div class="header_connect">
+            <a href="#" id="backButton">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+
+        <!-- Première étape d'inscription (signup_container1) -->
+        <div class="signup_container1">
+            <p class="title">Bienvenue parmi nous !</p>
+            <form id="signupForm">
+                <table>
+                    <tr>
+                        <td>
+                            <label for="nom">Nom</label><br>
+                            <input type="text" id="nom" name="nom" required placeholder="Entrez votre nom">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="prenom">Prénom</label><br>
+                            <input type="text" id="prenom" name="prenom" required placeholder="Entrez votre prénom">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="genre">Genre :</label><br>
+                            <select id="genre" name="genre">
+                                <option value="" disabled selected>Veuillez sélectionner un genre</option>
+                                <option value="homme">Homme</option>
+                                <option value="femme">Femme</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">
+                            <button type="button" id="nextButton">Suivant <i class="fa-solid fa-arrow-right"></i></button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <p class="text_already_account">Vous avez déjà un compte ? <a href="connect.html">Se connecter</a></p>
+        </div>
+
+        <!-- Deuxième étape d'inscription (signup_container2) -->
+        <div class="signup_container2">
+            <p class="title">Un petit effort en plus !</p>
+            <form id="finalSignupForm">
+                <table>
+                    <tr>
+                        <td>
+                            <label for="email">Email</label><br>
+                            <input type="email" id="email" name="email" required placeholder="Entrez votre email">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="password">Mot de passe</label><br>
+                            <input type="password" id="password" name="password" required placeholder="Entrez votre mot de passe">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="confirm_password">Confirmer le mot de passe</label><br>
+                            <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirmez votre mot de passe">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">
+                            <button type="button" id="submitButton">Terminer <i class="fa-solid fa-check"></i></button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <!-- Troisième étape d'inscription (signup_container3) -->
+        <div class="signup_container3">
+            <img src="assets/img/img_validation.png" alt="">
+            <p class="confirm_name">Bonjour John</p>
+            <p class="title">Votre inscription à été validée !</p>
+            <a class="start_button" href="#">Commencer</a>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/ddff5b2124.js" crossorigin="anonymous"></script>
+
+    <script>
+        const nextButton = document.getElementById('nextButton');
+        const backButton = document.getElementById('backButton');
+        const submitButton = document.getElementById('submitButton');
+        const signupContainer1 = document.querySelector('.signup_container1');
+        const signupContainer2 = document.querySelector('.signup_container2');
+        const signupContainer3 = document.querySelector('.signup_container3');
+        let onSignupContainer2 = false;
+
+        // Bouton "Suivant" : vers signup_container2
+        nextButton.addEventListener('click', () => {
+            signupContainer1.style.left = '-150vw';
+            signupContainer2.style.left = '2.3rem';
+            onSignupContainer2 = true;
+        });
+
+        // Bouton "Retour"
+        backButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (onSignupContainer2) {
+                signupContainer1.style.left = '2.3rem';
+                signupContainer2.style.left = '150vw';
+                onSignupContainer2 = false;
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Bouton "Terminer" avec icône de chargement et transition vers signup_container3
+        submitButton.addEventListener('click', () => {
+            submitButton.innerHTML = 'Chargement <i class="fa-solid fa-spinner loading-icon"></i>';
+            
+            setTimeout(() => {
+                signupContainer2.style.left = '-150vw';
+                signupContainer3.style.left = '2.3rem';
+                backButton.style.display = 'none'
+            }, 1500); // Délai pour afficher l'icône de chargement
+        });
+    </script>
+  </body>
+
+  </html>
+

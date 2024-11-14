@@ -1,0 +1,139 @@
+.header_connect{
+    padding: 2rem 2.5rem;
+}
+
+.header_connect i{
+    font-size: 1.6rem;
+    color: var(--global_secondary_color);
+}
+
+.signup_container1, .signup_container2, .signup_container3 {
+    width: 80%;
+    position: absolute;
+    top: 7rem;
+    left: 2.2rem;
+    transition: left 0.6s ease-in-out;
+}
+
+/* Déplacement initial de signup_container2 en dehors de la fenêtre */
+.signup_container2, .signup_container3 {
+    left: 130vw;
+}
+
+.signup_container1 .title, .signup_container2 .title{
+    font-size: 2.2rem;
+}
+
+
+form{
+    margin-top: 3rem;
+    width: 100%;
+}
+
+table{
+    width: 100%;
+}
+
+
+input{
+    width: 100%;
+    outline: none;
+    border: solid 1px var(--global_grey_color_input);
+    padding: 12px 20px;
+    border-radius: var(--global_border_radius);
+    margin: .5rem 0 2rem 0;
+}
+
+input::placeholder{
+    color: var(--global_grey_color_input);
+    font-size: .9rem;
+    font-family: 'Albert Sans';
+}
+
+select{
+    width: 100%;
+    border: solid 1px var(--global_grey_color_input);
+    padding: 12px 20px;
+    border-radius: var(--global_border_radius);
+    margin: .5rem 0 2rem 0;
+}
+
+select option {
+    font-family: 'Albert Sans', sans-serif;
+}
+
+#genre{
+    font-size: .9rem;
+    font-family: 'Albert Sans';
+}
+
+button{
+    width: 100%;
+    padding: 12px;
+    background-color: var(--global_secondary_color);
+    color: var(--global_background_color);
+    display: block;
+    margin: 0 auto;
+    border-radius: var(--global_border_radius);
+    font-size: .95rem;
+}
+
+button i{
+    margin-left: .5rem;
+}
+
+.text_already_account{
+    margin-top: 1rem;
+    color: var(--global_grey_color);
+    font-size: .9rem;
+    text-align: center;
+}
+
+.text_already_account a{
+    color: var(--global_primary_color);
+    font-weight: bold;
+}
+
+ /* Style pour l'icône de chargement */
+ .loading-icon {
+    animation: spin 1s linear infinite;
+}
+
+/* Animation de rotation */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+.signup_container3 img{
+    margin-top: 2rem;
+    width: 100%;
+    margin-left: -3rem;
+}
+
+.signup_container3 .confirm_name{
+    margin-top: 4rem;
+    font-size: 1.1rem;
+    text-align: center;
+
+}
+
+.signup_container3 .title{
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 2.2rem;
+}
+
+.start_button{
+    width: 80%;
+    padding: 12px;
+    background-color: var(--global_primary_color);
+    color: var(--global_background_color);
+    display: block;
+    margin: 0 auto;
+    border-radius: var(--global_border_radius);
+    margin-top: 4rem;
+    text-align: center;
+
+}
