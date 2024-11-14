@@ -11,7 +11,7 @@ body {
 }
 
 :root {
-    --global_background_color : rgb(247, 246, 246);
+    --global_background_color : rgb(255, 255, 255);
     --global_primary_color: rgb(56, 83, 255);
     --global_secondary_color: rgb(30, 30, 30);
     --global_text_color: rgb(0, 0, 0);
