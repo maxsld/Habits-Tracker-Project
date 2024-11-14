@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    padding: 4rem 1.5rem;
 }
 
 .index__header img{
@@ -26,4 +26,14 @@
     100% {
         transform: rotate(360deg); /* Rotation complète (360 degrés) */
     }
+}
+
+.smiley_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.smiley_container img{
+    width: 70%;
 }
