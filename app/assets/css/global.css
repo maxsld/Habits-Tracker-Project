@@ -19,7 +19,11 @@ body {
     --global_red_color: rgb(255, 12, 12);
     --global_orange_color: rgb(255, 127, 0);
     --global_yellow_color: rgb(255, 187, 0);
-    --global_grey_color: rgb(179, 179, 179);
+    --global_grey_color: rgb(131, 131, 131);
 
-    --global_border_radius: 1.2rem;
+    --global_border_radius: .8rem;
+}
+
+a{
+    text-decoration: none;
 }

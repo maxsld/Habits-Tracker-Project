@@ -1,4 +1,7 @@
 
+.index{
+    width: 100%;
+}
 
 .index__header{
     display: flex;
@@ -36,4 +39,52 @@
 
 .smiley_container img{
     width: 70%;
+}
+
+.text_container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.text_phrase_accroche{
+    text-align: center;
+    font-size: 2rem;
+    width: 50%;
+}
+
+.text_highlights{
+    color: var(--global_background_color);
+    background-color: var(--global_primary_color);
+    padding: 6px 12px;
+    margin-top: 1.6rem;
+    font-size: 2.4rem;
+    transform: rotateZ(-3deg);
+}
+
+.bouton_container{
+    margin-top: 4rem;
+    text-align: center;
+    width: 100%;
+}
+
+.start_button{
+    width: 80%;
+    padding: 12px;
+    background-color: var(--global_secondary_color);
+    color: var(--global_background_color);
+    display: block;
+    margin: 0 auto;
+    border-radius: var(--global_border_radius);
+}
+
+.text_already_account{
+    margin-top: 1rem;
+    color: var(--global_grey_color);
+}
+
+.text_already_account a{
+    color: var(--global_primary_color);
+    font-weight: bold;
 }
