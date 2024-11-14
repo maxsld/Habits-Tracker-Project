@@ -1,0 +1,7 @@
+<script>
+    fetch('/path/to/global.html')
+      .then(response => response.text())
+      .then(data => {
+        document.head.insertAdjacentHTML('beforeend', data);
+      });
+  </script>
