@@ -20,6 +20,38 @@
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
         </div>
+
+        <div class="connect_container">
+            <p class="title">Heureux de vous revoir !</p>
+            
+            <form action="/submit" method="POST">
+                <table>
+                    <tr>
+                        <td>
+                            <label for="nom">Identifiant / Email</label><br>
+                            <input type="text" id="id" name="id" required placeholder="Entrez votre identifiant / email">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="prenom">Mot de passe :</label><br>
+                            <input type="password" id="password" name="password" required placeholder="Entrez votre mot de passe">
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="text-align: center;">
+                            <button type="submit">Se connecter</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <br>
+            <a class="forget_password" href="#">Mot de passe oublié ?</a>
+
+            <img class="img_firework" src="assets/img/firework.png" alt="">
+            
+        </div>
     </div>
 
     <script src="https://kit.fontawesome.com/ddff5b2124.js" crossorigin="anonymous"></script>

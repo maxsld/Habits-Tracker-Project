@@ -6,3 +6,60 @@
     font-size: 1.6rem;
     color: var(--global_secondary_color);
 }
+
+.connect_container{
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+.connect_container .title{
+    font-size: 2.1rem;
+}
+
+
+form{
+    margin-top: 3rem;
+    width: 100%;
+}
+
+table{
+    width: 100%;
+}
+
+
+input{
+    width: 100%;
+    outline: none;
+    border: solid 1px var(--global_grey_color_input);
+    padding: 12px 20px;
+    border-radius: var(--global_border_radius);
+    margin: .5rem 0 2rem 0;
+}
+
+input::placeholder{
+    color: var(--global_grey_color_input);
+    font-size: .9rem;
+    font-family: 'Albert Sans';
+}
+
+button{
+    width: 100%;
+    padding: 12px;
+    background-color: var(--global_primary_color);
+    color: var(--global_background_color);
+    display: block;
+    margin: 0 auto;
+    border-radius: var(--global_border_radius);
+    font-size: .95rem;
+}
+
+.forget_password{
+    color: var(--global_secondary_color);
+    text-decoration: underline;
+}
+
+.img_firework{
+    width: 100%;
+    margin: 0 auto;
+}
