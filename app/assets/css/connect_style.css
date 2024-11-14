@@ -1,0 +1,8 @@
+.header_connect{
+    padding: 2rem 2.5rem;
+}
+
+.header_connect i{
+    font-size: 1.6rem;
+    color: var(--global_secondary_color);
+}

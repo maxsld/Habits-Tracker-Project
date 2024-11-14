@@ -1,0 +1,29 @@
+<script>
+    fetch('assets/global.html')
+      .then(response => response.text())
+      .then(data => {
+        document.head.insertAdjacentHTML('beforeend', data);
+      });
+  </script>
+
+
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" href="assets/css/connect_style.css">
+  </head>
+  <body>
+    <div class="connect">
+        <div class="header_connect">
+            <a href="index.html">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/ddff5b2124.js" crossorigin="anonymous"></script>
+  </body>
+
+  </html>
+
