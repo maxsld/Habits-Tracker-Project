@@ -1,0 +1,49 @@
+<script>
+    fetch('assets/global.html')
+      .then(response => response.text())
+      .then(data => {
+        document.head.insertAdjacentHTML('beforeend', data);
+      });
+</script>
+
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" href="assets/css/add-friends_style.css">
+  </head>
+  <body>
+    <div class="add-friends">
+        <a href="#">
+            <i class="fa-solid fa-arrow-left back"></i>
+        </a>
+        <div class="add-friends__header">
+            <p>Intégrer un groupe</p>
+        </div>
+        <div class="add-friends__title">
+            <p>Intégrer un <span>group</span></p>
+        </div>
+        <input class="add-friends__input" type="text" id="inputAddFriends" placeholder="Entrer le CodAmi" readonly>
+        <div class="add-friends__code-container">
+            <div class="add-friends__code">
+                <div class="digit" onclick="addDigit(1)">1</div>
+                <div class="digit" onclick="addDigit(2)">2</div>
+                <div class="digit" onclick="addDigit(3)">3</div>
+                <div class="digit" onclick="addDigit(4)">4</div>
+                <div class="digit" onclick="addDigit(5)">5</div>
+                <div class="digit" onclick="addDigit(6)">6</div>
+                <div class="digit" onclick="addDigit(7)">7</div>
+                <div class="digit" onclick="addDigit(8)">8</div>
+                <div class="digit" onclick="addDigit(9)">9</div>
+                <div class="digit" onclick="removeLastDigit()"><i class="fa-solid fa-arrow-left"></i></div>
+                <div class="digit" onclick="addDigit(0)">0</div>
+                <div class="digit" onclick="clearDigits()"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+        </div>
+        <div class="add-friends__button">
+            <a href="#">Intégrer le groupe</a>
+        </div>
+    </div>
+    <script src="assets/js/add-friends_script.js"></script>
+    <script src="https://kit.fontawesome.com/ddff5b2124.js" crossorigin="anonymous"></script>
+  </body>
+  </html>

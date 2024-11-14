@@ -1,0 +1,91 @@
+.add-friends {
+    position: relative;
+    width: 100%;
+    padding: 0 4rem;
+}
+
+.back {
+    font-size: 1.6rem;
+    color: var(--global_secondary_color);
+    position: absolute;
+    top: 2rem;
+    left: 2.5rem;
+}
+
+.add-friends__header {
+    position: relative;
+    width: 100%;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.add-friends__title {
+    position: relative;
+    width: 100%;
+    margin-top: 5rem;
+}
+
+.add-friends__title p {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.add-friends__title p span {
+    color: var(--global_primary_color);
+}
+
+.add-friends__input {
+    margin: 3rem 0;
+    position: relative;
+    width: 100%;
+    border-radius: var(--global_border_radius);
+    padding: .5rem;
+    outline: none;
+    border: 1px solid var(--global_grey_color);
+}
+
+.add-friends__code-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-friends__code {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 64px);
+    grid-template-rows: repeat(4, 64px);
+    gap: 1rem;
+}
+
+.digit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid var(--global_grey_color);
+    border-radius: .75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.add-friends__button {
+    margin-top: 4rem;
+    text-align: center;
+    width: 100%;
+}
+
+.add-friends__button a {
+    padding: .8rem;
+    background-color: var(--global_primary_color);
+    color: var(--global_background_color);
+    display: block;
+    margin: 0 auto;
+    border-radius: var(--global_border_radius);
+}
