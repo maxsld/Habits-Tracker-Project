@@ -1,0 +1,86 @@
+<script>
+    fetch('assets/global.html')
+      .then(response => response.text())
+      .then(data => {
+        document.head.insertAdjacentHTML('beforeend', data);
+      });
+</script>
+
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" href="assets/css/profile_style.css">
+  </head>
+  <body>
+    <div class="profile">
+        <a href="#">
+            <i class="fa-solid fa-arrow-left back"></i>
+        </a>
+        <div class="profile__header">
+            <p>Mon espace</p>
+        </div>
+        <a href="#">
+            <i class="fa-solid fa-gear settings"></i>
+        </a>
+        <div class="profile__img">
+            <img src="assets/img/profile.png" alt="">
+        </div>
+        <div class="profile__tabs">
+            <div class="profile__tab active">Stats</div>
+            <div class="profile__tab">Amis</div>
+            <div class="profile__tab">Rang</div>
+        </div>
+        <div class="profile__tabs-content">
+            <div class="profile__tab-stats active">
+                <div class="profile__title">
+                    <p>Vos analyses</p>
+                    <div class="profile__settings">
+
+                    </div>
+                </div>
+            </div>
+            <div class="profile__tab-friend">
+                <div class="profile__title">
+                    <p>Vos amis</p>
+                    <div class="profile__settings">
+                        <a href="add-friends.html">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </a>
+                        <a href="#">Tableau des scores</a>
+                    </div>
+                </div>
+                <div class="profile__friends">
+                    <div class="profile__friend">
+                        <div class="profile__friend__infos">
+                            <img src="assets/img/profile.png" alt="">
+                            <p>John Snow</p>
+                        </div>
+                    </div>
+                    <div class="profile__friend">
+                        <div class="profile__friend__infos">
+                            <img src="assets/img/profile.png" alt="">
+                            <p>John Hook</p>
+                        </div>
+                    </div>
+                    <div class="profile__friend">
+                        <div class="profile__friend__infos">
+                            <img src="assets/img/profile.png" alt="">
+                            <p>John Carter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile__tab-rank">
+                <div class="profile__title">
+                    <p>Votre rang</p>
+                    <div class="profile__settings">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/profile_script.js"></script>
+    <script src="https://kit.fontawesome.com/ddff5b2124.js" crossorigin="anonymous"></script>
+  </body>
+  </html>
