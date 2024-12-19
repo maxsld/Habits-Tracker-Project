@@ -58,6 +58,7 @@ app.post("/api/signup", async (req, res) => {
     password: hashedPassword,
     tokens: [],
     habits: [],
+    emojiChecked: false,
   });
 
   // Generate a token using the user's inserted ID
@@ -245,6 +246,42 @@ app.post("/api/deleteHabit", async (req, res) => {
   }
 });
 
+app.post("/api/saveEmoji", async (req, res) => {
+  const { userId, emojiDay } = req.body;
+
+  // Ensure both token and userId are provided
+  if (!userId || !emojiDay ) {
+    return res.status(400).json({
+      error:
+        "User ID or emoji day is missing",
+    });
+  }
+
+  try {
+    // Connect to the database
+    const usersCollection = await connectToDb();
+
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { emojiDay, emojiChecked: true } }
+    );
+
+    res
+      .status(200)
+      .json({ message: "Emoji day saved successfully" });
+  } catch (error) {
+    // Handle any errors during token verification (e.g., database issues)
+    console.error("Error during emoji day saving:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // POST route to get user's info
 app.post("/api/getUserInfo", async (req, res) => {
     const { userId } = req.body;
@@ -266,6 +303,8 @@ app.post("/api/getUserInfo", async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         habits: user.habits,
+        emojiDay: user.emojiDay,
+        emojiChecked: user.emojiChecked
       });
     } catch (error) {
       console.error("Error fetching user info:", error);

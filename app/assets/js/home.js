@@ -36,134 +36,6 @@ document
     });
   });
 
-fetch("http://localhost:5000/api/getUserInfo", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({ userId }), // Passer l'userId dans le body
-})
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("Failed to fetch user info");
-    }
-    return response.json();
-  })
-  .then((data) => {
-    const nameElement = document.querySelector(".title");
-    if (nameElement) {
-      const capitalize = (str) =>
-        str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-      nameElement.innerHTML = `Bonjour, ${capitalize(data.firstName)} 😁`;
-    }
-
-    const programDayContainer = document.getElementById("program_day");
-    if (programDayContainer && data.habits) {
-      data.habits.forEach((habit) => {
-        const habitCard = document.createElement("div");
-        habitCard.classList.add("program_card_container");
-
-        habitCard.innerHTML = `
-              <div class="program_card">
-                <p class="title">${habit.habitName}</p>
-                <p class="subtitle">${habit.habitDescription}</p>
-              </div>
-              <div class="icon-container-main">
-                <div class="icon-container check">
-                  <i class="fa-solid fa-check"></i>
-                </div>
-                <div class="icon-container cross">
-                  <i class="fa-solid fa-times"></i>
-                </div>
-                <div class="icon-container delete">
-                  <i class="fa-solid fa-trash"></i>
-                </div>
-              </div>
-            `;
-
-        programDayContainer.appendChild(habitCard);
-
-        // Ajout de l'événement de suppression pour chaque carte
-        const deleteButton = habitCard.querySelector(".delete");
-        deleteButton.addEventListener("click", async () => {
-          habitCard.remove();
-          // Requête pour supprimer l'habitude du serveur
-          await fetch("http://localhost:5000/api/deleteHabit", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId,
-              habitName: habit.habitName,
-            }),
-          });
-        });
-      });
-
-      document.querySelectorAll(".program_card_container").forEach((card) => {
-        let startX = 0,
-          currentX = 0;
-
-        // Événements tactiles
-        card.addEventListener("touchstart", (e) => {
-          startX = e.touches[0].clientX;
-        });
-
-        card.addEventListener("touchmove", (e) => {
-          currentX = e.touches[0].clientX;
-          const deltaX = currentX - startX;
-
-          if (deltaX < -30) {
-            // Si glissement vers la gauche dépasse 30px
-            card.classList.add("swiped");
-            card.classList.remove("swiped-back");
-          } else if (deltaX > 30) {
-            // Si glissement vers la droite dépasse 30px
-            card.classList.add("swiped-back");
-            card.classList.remove("swiped");
-          }
-
-          e.preventDefault();
-        });
-
-        card.addEventListener("touchend", () => {
-          // Rien à faire ici pour l'instant
-        });
-
-        // Événements souris
-        card.addEventListener("mousedown", (e) => {
-          startX = e.clientX;
-          e.preventDefault();
-        });
-
-        card.addEventListener("mousemove", (e) => {
-          if (startX === 0) return;
-
-          currentX = e.clientX;
-          const deltaX = currentX - startX;
-
-          if (deltaX < -30) {
-            card.classList.add("swiped");
-            card.classList.remove("swiped-back");
-          } else if (deltaX > 30) {
-            card.classList.add("swiped-back");
-            card.classList.remove("swiped");
-          }
-
-          e.preventDefault();
-        });
-
-        card.addEventListener("mouseup", () => {
-          startX = 0;
-        });
-      });
-    }
-  })
-  .catch((error) => {
-    console.error("Error fetching user info:", error);
-  });
-
 document.getElementById("open_add_page").addEventListener("click", function () {
   document.getElementById("add_page").classList.toggle("show_add_page");
 });
@@ -262,9 +134,18 @@ document
      // Ajouter l'événement de clic pour le bouton de validation
      const validateBtn = document.getElementById("validate-btn-emoji");
      const feeling_today_page = document.getElementById("feeling_today_page");
-    validateBtn.addEventListener("click", () => {
-        const selectedEmoji = emojis[currentIndex];
-        alert("Emoji sélectionné : " + selectedEmoji.textContent);
+    validateBtn.addEventListener("click", async () => {
+        const selectedEmoji = emojis[currentIndex].textContent;
+        await fetch("http://localhost:5000/api/saveEmoji", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+              emojiDay: selectedEmoji,
+            }),
+          });
         feeling_today_page.style.display="none";
     });
 
@@ -274,3 +155,138 @@ document
     });
 
 });
+
+
+
+fetch("http://localhost:5000/api/getUserInfo", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId }), // Passer l'userId dans le body
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch user info");
+      }
+      return response.json();
+    })
+    .then((data) => {
+        const feeling_today_page = document.getElementById("feeling_today_page");
+        if (data.emojiChecked) {
+            feeling_today_page.style.display = "none";
+        }
+
+      const nameElement = document.querySelector(".title");
+      if (nameElement) {
+        const capitalize = (str) =>
+          str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        nameElement.innerHTML = `Bonjour, ${capitalize(data.firstName)} 😁`;
+      }
+
+      const programDayContainer = document.getElementById("program_day");
+      if (programDayContainer && data.habits) {
+        data.habits.forEach((habit) => {
+          const habitCard = document.createElement("div");
+          habitCard.classList.add("program_card_container");
+
+          habitCard.innerHTML = `
+                <div class="program_card">
+                  <p class="title">${habit.habitName}</p>
+                  <p class="subtitle">${habit.habitDescription}</p>
+                </div>
+                <div class="icon-container-main">
+                  <div class="icon-container check">
+                    <i class="fa-solid fa-check"></i>
+                  </div>
+                  <div class="icon-container cross">
+                    <i class="fa-solid fa-times"></i>
+                  </div>
+                  <div class="icon-container delete">
+                    <i class="fa-solid fa-trash"></i>
+                  </div>
+                </div>
+              `;
+
+          programDayContainer.appendChild(habitCard);
+
+          // Ajout de l'événement de suppression pour chaque carte
+          const deleteButton = habitCard.querySelector(".delete");
+          deleteButton.addEventListener("click", async () => {
+            habitCard.remove();
+            // Requête pour supprimer l'habitude du serveur
+            await fetch("http://localhost:5000/api/deleteHabit", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId,
+                habitName: habit.habitName,
+              }),
+            });
+          });
+        });
+
+        document.querySelectorAll(".program_card_container").forEach((card) => {
+          let startX = 0,
+            currentX = 0;
+
+          // Événements tactiles
+          card.addEventListener("touchstart", (e) => {
+            startX = e.touches[0].clientX;
+          });
+
+          card.addEventListener("touchmove", (e) => {
+            currentX = e.touches[0].clientX;
+            const deltaX = currentX - startX;
+
+            if (deltaX < -30) {
+              // Si glissement vers la gauche dépasse 30px
+              card.classList.add("swiped");
+              card.classList.remove("swiped-back");
+            } else if (deltaX > 30) {
+              // Si glissement vers la droite dépasse 30px
+              card.classList.add("swiped-back");
+              card.classList.remove("swiped");
+            }
+
+            e.preventDefault();
+          });
+
+          card.addEventListener("touchend", () => {
+            // Rien à faire ici pour l'instant
+          });
+
+          // Événements souris
+          card.addEventListener("mousedown", (e) => {
+            startX = e.clientX;
+            e.preventDefault();
+          });
+
+          card.addEventListener("mousemove", (e) => {
+            if (startX === 0) return;
+
+            currentX = e.clientX;
+            const deltaX = currentX - startX;
+
+            if (deltaX < -30) {
+              card.classList.add("swiped");
+              card.classList.remove("swiped-back");
+            } else if (deltaX > 30) {
+              card.classList.add("swiped-back");
+              card.classList.remove("swiped");
+            }
+
+            e.preventDefault();
+          });
+
+          card.addEventListener("mouseup", () => {
+            startX = 0;
+          });
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching user info:", error);
+    });
