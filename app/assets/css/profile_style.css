@@ -172,6 +172,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 1rem;
 }
 
 .profile__friend__settings__message {
@@ -180,4 +181,8 @@
 
 .profile__friend__settings__delete {
     background-color: var(--global_red_color);
+}
+.profile__friend__settings__message i, .profile__friend__settings__delete i {
+    color: #ffffff;
+    font-size: 1.3rem;
 }
