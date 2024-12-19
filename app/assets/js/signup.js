@@ -138,6 +138,7 @@ submitButton.addEventListener("click", async () => {
       const formattedFirstName = userFirstName.charAt(0).toUpperCase() + userFirstName.slice(1).toLowerCase();
       signupContainer3.querySelector(".confirm_name").textContent = `Bonjour ${formattedFirstName}`;
       document.cookie = `token=${result.token}; path=/; secure; SameSite=Strict; max-age=3600`;
+      document.cookie = `userId=${result.userId}; path=/; secure; SameSite=Strict; max-age=3600`;
     } else {
       // Erreur renvoyée par l'API
       showErrorMessage(errorMessage2, result.error);

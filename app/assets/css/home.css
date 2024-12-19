@@ -129,7 +129,6 @@ body {
     padding: 15px;
     border-radius: 1rem;
     display: none; /* Les icônes sont cachées au départ */
-    pointer-events: none;
     transition: transform 0.3s ease; /* Animation de la carte */
 }
 
@@ -317,7 +316,7 @@ button{
     top: 0;
     padding: 30px 40px;
     left: 0;
-    
+
 }
 
 .feeling_today_page .header{

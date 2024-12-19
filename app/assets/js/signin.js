@@ -15,6 +15,7 @@ document.getElementById('signinForm').addEventListener('submit', async (event) =
     const data = await response.json();
     if (response.ok) {
         document.cookie = `token=${data.token}; path=/; secure; SameSite=Strict; max-age=3600`;
+        document.cookie = `userId=${data.userId}; path=/; secure; SameSite=Strict; max-age=3600`;
         window.location.href = '/app/home.html'; // Redirect to dashboard or home page
     } else {
         // Show error message

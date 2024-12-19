@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 
@@ -57,6 +57,7 @@ app.post("/api/signup", async (req, res) => {
     email,
     password: hashedPassword,
     tokens: [],
+    habits: [],
   });
 
   // Generate a token using the user's inserted ID
@@ -68,7 +69,7 @@ app.post("/api/signup", async (req, res) => {
     { $push: { tokens: token } }
   );
 
-  res.json({ token });
+  res.json({ token, userId: result.insertedId });
 });
 
 // POST route for user signin
@@ -103,47 +104,174 @@ app.post("/api/signin", async (req, res) => {
     { $push: { tokens: token } }
   );
 
-  res.json({ token });
+  res.json({ token, userId: existingUser._id });
 });
 
 // POST route to verify a token
 app.post("/api/verifyToken", async (req, res) => {
-  const { token } = req.body;
+  const { token, userId } = req.body;
 
-  // Ensure the token is provided
-  if (!token) {
-    return res.status(400).json({ error: "Token is missing" });
+  // Ensure both token and userId are provided
+  if (!token || !userId) {
+    return res.status(400).json({ error: "Token or userId is missing" });
   }
 
   try {
     // Connect to the database
     const usersCollection = await connectToDb();
 
-    // Check if a user exists with the provided token
-    const user = await usersCollection.findOne({ tokens: { $in: [token] } });
+    // Check if a user exists with the provided userId
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
 
     if (user) {
-      // If a user with this token exists, validate it
-      const tokenValid = await user.tokens.some(async (storedToken) => {
-        return await bcrypt.compare(token, storedToken);
-      });
+      // Check if the token is in the user's token list
+      const tokenExists = user.tokens.some(
+        async (storedToken) => await bcrypt.compare(token, storedToken)
+      );
 
-      if (tokenValid) {
+      if (tokenExists) {
         // Token is valid
-        res.json({ valid: true });
+        return res.json({ valid: true });
       } else {
         // Token is invalid or expired
-        res.json({ valid: false });
+        return res.json({ valid: false });
       }
     } else {
-      // No user found with the provided token
-      res.json({ valid: false });
+      // No user found with the provided userId
+      return res.status(404).json({ error: "User not found" });
     }
   } catch (error) {
     // Handle any errors during token verification (e.g., database issues)
-    res.status(500).json({ error: "Error during token verification" });
+    console.error("Error during token verification:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// POST route to add an habit
+app.post("/api/newHabit", async (req, res) => {
+  const { userId, habitName, habitDescription, habitCategory } = req.body;
+
+  // Ensure both token and userId are provided
+  if (!userId || !habitName || !habitDescription || !habitCategory) {
+    return res.status(400).json({
+      error:
+        "User ID, habit's name, habit's description, or habit's category is missing",
+    });
+  }
+
+  try {
+    // Connect to the database
+    const usersCollection = await connectToDb();
+
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Check if the habit name already exists in the user's habits
+    const habitExists = user.habits?.some(
+      (habit) => habit.habitName.toLowerCase() === habitName.toLowerCase()
+    );
+
+    if (habitExists) {
+      return res.status(400).json({
+        error: `A habit with the name "${habitName}" already exists.`,
+      });
+    }
+
+    const newHabit = {
+      habitName,
+      habitDescription,
+      habitCategory,
+    };
+
+    await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $push: { habits: newHabit } }
+    );
+
+    res
+      .status(200)
+      .json({ message: "Habit added successfully", habit: newHabit });
+  } catch (error) {
+    // Handle any errors during token verification (e.g., database issues)
+    console.error("Error during habit creation:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/api/deleteHabit", async (req, res) => {
+  const { userId, habitName } = req.body;
+
+  // Ensure both userId and habitName are provided
+  if (!userId || !habitName) {
+    return res.status(400).json({
+      error:
+        "User ID or habit's name is missing",
+    });
+  }
+
+  try {
+    // Connect to the database
+    const usersCollection = await connectToDb();
+
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const habitIndex = user.habits.findIndex(habit => habit.habitName.toLowerCase() === habitName.toLowerCase());
+
+    if (habitIndex === -1) {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+
+    user.habits.splice(habitIndex, 1);
+
+    await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { habits: user.habits } }
+    );
+
+    res
+      .status(200)
+      .json({ message: "Habit deleted successfully" });
+  } catch (error) {
+    // Handle any errors during token verification (e.g., database issues)
+    console.error("Error during habit deletion:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST route to get user's info
+app.post("/api/getUserInfo", async (req, res) => {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is missing" });
+    }
+
+    try {
+      const usersCollection = await connectToDb();
+      const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        habits: user.habits,
+      });
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
 
 // Start the server
 app.listen(port, () => {
