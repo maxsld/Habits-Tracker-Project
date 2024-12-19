@@ -308,3 +308,86 @@ button{
 .show_add_page{
     bottom: 0; /* Afficher la div avec l'effet de smooth */
 }
+
+.feeling_today_page{
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    padding: 30px 40px;
+    left: 0;
+    
+}
+
+.feeling_today_page .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #000;
+    overflow-x: hidden;
+}
+
+.feeling_today_page .header a{
+    color: rgb(0, 0, 0, 0.6);
+}
+
+.feeling_today_page .title{
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 6rem;
+}
+
+.feeling_today_page .description{
+    text-align: center;
+    margin-top: 1rem;
+    font-size: .9rem;
+    color: rgb(0, 0, 0, 0.5);
+}
+
+
+
+
+.emoji-carousel {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 6rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+.emoji {
+    position: absolute;
+    font-size: 5rem;
+    opacity: 0.4;
+    transform-origin: center bottom;
+    transform: translate(-50%, -50%) scale(0.5);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.emoji.active {
+    font-size: 6rem;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.validation{
+    position: absolute;
+    bottom: 10rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.validation a{
+    color: #fff;
+    font-size: 1.5rem;
+    background-color: #000;
+    padding: 30px 34px;
+    border-radius: 50%;
+}
