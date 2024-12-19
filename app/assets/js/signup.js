@@ -73,93 +73,110 @@ function isValidPassword(password) {
   return passwordRegex.test(password);
 }
 
-// Bouton "Terminer" avec validation
-submitButton.addEventListener("click", async () => {
-  const email = document.getElementById("email").value.trim().toLowerCase();
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("confirm_password").value;
-  const lastName = document.getElementById("nom").value.trim().toLowerCase();
-  const firstName = document.getElementById("prenom").value.trim().toLowerCase();
-  const rawGender = document.getElementById("genre").value;
-  let gender;
-  if (rawGender === "homme") {
-    gender = "male";
-  } else if (rawGender === "femme") {
-    gender = "female";
-  } else {
-    gender = "other";
+// Fonction pour ajouter un délai en millisecondes
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // Vérifie que l'email est valide
-  if (!isValidEmail(email)) {
-    showErrorMessage(
-      errorMessage2,
-      "Veuillez entrer une adresse email valide."
-    );
-    return;
-  }
-
-  // Vérifie que le mot de passe respecte les règles
-  if (!isValidPassword(password)) {
-    showErrorMessage(
-      errorMessage2,
-      "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial."
-    );
-    return;
-  }
-
-  // Vérifie que les mots de passe correspondent
-  if (password !== confirmPassword) {
-    showErrorMessage(
-      errorMessage2,
-      "Les mots de passe ne correspondent pas. Veuillez réessayer."
-    );
-    return;
-  }
-
-  try {
-    // Envoyer les données à l'API
-    const response = await fetch("http://localhost:5000/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ lastName, firstName, gender, email, password }),
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      submitButton.innerHTML = 'Chargement <i class="fa-solid fa-spinner loading-icon"></i>';
-            
-            setTimeout(() => {
-                signupContainer2.style.left = '-150vw';
-                signupContainer3.style.left = '2.3rem';
-                backButton.style.display = 'none'
-                backButton.style.display = 'none';
-            }, 1500); // Délai pour afficher l'icône de chargement
-      // Succès
-      signupContainer2.style.left = "-150vw";
-      signupContainer3.style.left = "2.3rem";
-      backButton.style.display = "none";
-      const formattedFirstName = userFirstName.charAt(0).toUpperCase() + userFirstName.slice(1).toLowerCase();
-      signupContainer3.querySelector(".confirm_name").textContent = `Bonjour ${formattedFirstName}`;
-      document.cookie = `token=${result.token}; path=/; secure; SameSite=Strict; max-age=3600`;
-      document.cookie = `userId=${result.userId}; path=/; secure; SameSite=Strict; max-age=3600`;
-      
-        
+  // Bouton "Terminer" avec validation
+  submitButton.addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm_password").value;
+    const lastName = document.getElementById("nom").value.trim().toLowerCase();
+    const firstName = document
+      .getElementById("prenom")
+      .value.trim()
+      .toLowerCase();
+    const rawGender = document.getElementById("genre").value;
+    let gender;
+    if (rawGender === "homme") {
+      gender = "male";
+    } else if (rawGender === "femme") {
+      gender = "female";
     } else {
-      // Erreur renvoyée par l'API
-      showErrorMessage(errorMessage2, result.error);
+      gender = "other";
+    }
+
+    // Vérifie que l'email est valide
+    if (!isValidEmail(email)) {
+      showErrorMessage(
+        errorMessage2,
+        "Veuillez entrer une adresse email valide."
+      );
+      return;
+    }
+
+    // Vérifie que le mot de passe respecte les règles
+    if (!isValidPassword(password)) {
+      showErrorMessage(
+        errorMessage2,
+        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial."
+      );
+      return;
+    }
+
+    // Vérifie que les mots de passe correspondent
+    if (password !== confirmPassword) {
+      showErrorMessage(
+        errorMessage2,
+        "Les mots de passe ne correspondent pas. Veuillez réessayer."
+      );
+      return;
+    }
+
+    try {
+      // Envoyer les données à l'API
+      const response = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ lastName, firstName, gender, email, password }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        submitButton.innerHTML =
+          '<i class="fa-solid fa-spinner loading-icon"></i> Chargement';
+
+        // Attendre 1.5 secondes avant de mettre à jour le bouton avec l'icône de succès
+        await delay(1500);
+
+        // Mettre à jour le texte du bouton avec l'icône de validation
+        submitButton.innerHTML = '<i class="fa-solid fa-check"></i> Terminer';
+
+        // Attendre 0.5 seconde avant de passer à l'étape suivante
+        await delay(500);
+
+        // Passer à l'étape suivante
+        signupContainer2.style.left = "-150vw";
+        signupContainer3.style.left = "2.3rem";
+        backButton.style.display = "none";
+
+        // Succès
+        const formattedFirstName =
+          userFirstName.charAt(0).toUpperCase() +
+          userFirstName.slice(1).toLowerCase();
+        signupContainer3.querySelector(
+          ".confirm_name"
+        ).textContent = `Bonjour ${formattedFirstName}`;
+
+        document.cookie = `token=${result.token}; path=/; secure; SameSite=Strict; max-age=3600`;
+        document.cookie = `userId=${result.userId}; path=/; secure; SameSite=Strict; max-age=3600`;
+      } else {
+        // Erreur renvoyée par l'API
+        showErrorMessage(errorMessage2, result.error);
+        submitButton.innerHTML = '<i class="fa-solid fa-check"></i> Terminer';
+      }
+    } catch (error) {
+      // Erreur réseau ou autre
+      console.error("Erreur lors de l'appel API :", error);
+      showErrorMessage(
+        errorMessage2,
+        "Une erreur est survenue. Veuillez réessayer plus tard."
+      );
       submitButton.innerHTML = 'Terminer <i class="fa-solid fa-check"></i>';
     }
-  } catch (error) {
-    // Erreur réseau ou autre
-    console.error("Erreur lors de l'appel API :", error);
-    showErrorMessage(
-      errorMessage2,
-      "Une erreur est survenue. Veuillez réessayer plus tard."
-    );
-    submitButton.innerHTML = 'Terminer <i class="fa-solid fa-check"></i>';
-  }
-});
+  });

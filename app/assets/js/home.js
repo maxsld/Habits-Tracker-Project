@@ -180,6 +180,9 @@ fetch("http://localhost:5000/api/getUserInfo", {
             feeling_today_page.style.display = "none";
         }
 
+        const emojiDayP = document.getElementById("emojiDay");
+        emojiDayP.innerHTML = data.emojiDay ?? '?';
+
       const nameElement = document.querySelector(".title");
       if (nameElement) {
         const capitalize = (str) =>
