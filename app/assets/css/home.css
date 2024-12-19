@@ -1,0 +1,310 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 30px 40px;
+    overflow-x: hidden;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.header i {
+    color: var(--global_secondary_color);
+    font-size: 1.7rem;
+}
+
+.header img {
+    width: 4rem;
+}
+
+.title {
+    margin-top: 3rem;
+    font-size: 2.2rem;
+}
+
+.subtitle {
+    margin-top: 0.6rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.graph_container{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.graph{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.program_day {
+    margin-top: 2rem;
+    background-color: #fff;
+}
+
+.show_program_day {
+    position: absolute;
+    top: 5rem;
+    height: 80vh;
+    width: 100%;
+    left: 0%;
+    padding: 30px 40px;
+    overflow-y: auto;
+    animation: slideUp .5s ease-out forwards; /* Animation pour faire monter le texte */
+}
+
+@keyframes slideUp {
+    0% {
+        top: 55%; /* L'élément commence à 67% du haut */
+        transform: translateY(0); /* Aucun décalage initial, car on modifie la position avec `top` */
+    }
+    100% {
+        top: 5rem; /* L'élément se déplace à sa position d'origine */
+        transform: translateY(0); /* L'élément revient à sa position d'origine */
+    }
+}
+
+
+.header_program_day {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header_program_day .title {
+    font-size: 1.2rem;
+    margin-top: 0rem;
+}
+
+.header_program_day a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0);
+    vertical-align: middle;
+}.program_card_container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+.program_card {
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    padding: 20px;
+    margin-top: 1rem;
+    background-color: #fdfdfd;
+    overflow: hidden;
+    transition: transform 0.3s ease; /* Animation de la carte */
+}
+
+.program_card .title {
+    font-size: 1rem;
+    margin-top: 0rem;
+}
+
+.icon-container-main {
+    display: flex; /* Alignement des icônes côte à côte */
+    gap: 10px; /* Espace entre les icônes */
+    position: absolute;
+    top: 58%;
+    transform: translateY(-50%);
+    right: -50px; /* Les icônes sont placées initialement à droite */
+    transition: right 0.3s ease; /* Animation de l'apparition des icônes */
+}
+
+/* Icône individuelle */
+.icon-container {
+    font-size: 24px;
+    padding: 15px;
+    border-radius: 1rem;
+    display: none; /* Les icônes sont cachées au départ */
+    pointer-events: none;
+    transition: transform 0.3s ease; /* Animation de la carte */
+}
+
+/* Icône "Check" */
+.icon-container.check {
+    background-color: #3AC20D; /* Vert */
+    color: #fff;
+    padding: 20px;
+}
+
+/* Icône "Delete" */
+.icon-container.delete {
+    background-color: var(--global_secondary_color); /* Rouge */
+    color: #fff;
+    padding: 20px;
+}
+
+/* Icône "Cross" */
+.icon-container.cross {
+    background-color: #FF4C4C; /* Orange */
+    color: #fff;
+    padding: 20px;
+}
+
+/* Lors du glissement vers la gauche */
+.program_card_container.swiped .icon-container-main {
+    right: -220px; /* Déplace le conteneur d'icônes vers la droite */
+    transition: transform 0.3s ease; /* Animation de la carte */
+}
+
+.program_card_container.swiped .icon-container {
+    display: block; /* Affiche chaque icône */
+    transform: translateX(0); /* Animation des icônes */
+}
+
+
+/* Glissement de la carte */
+.program_card_container.swiped {
+    transform: translateX(-200px); /* La carte glisse vers la gauche */
+    transition: transform 0.3s ease-in; /* Animation de la carte */
+}
+
+/* Retour de la carte à la position d'origine */
+.program_card_container.swiped-back {
+    transform: translateX(0px); /* La carte glisse vers la droite */
+    transition: transform 0.3s ease; /* Animation de la carte */
+}
+
+#see_all_program {
+    transition: transform 0.3s ease-in-out; /* Transition douce pour la rotation */
+}
+
+#see_all_program.rotated {
+    transform: rotate(180deg); /* Rotation de 180° */
+}
+
+
+.navbar{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navbar a{
+    margin: 0 25px;
+    color: #000;
+}
+
+.navbar i{
+    font-size: 1.3rem;
+}
+
+.navbar .add{
+    color: #fff;
+    background-color: #000;
+    border-radius: 50%;
+    padding: 20px 21px;
+    font-size: 1.2rem;
+}
+
+.add_page{
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+    padding: 30px 40px;
+    position: fixed;
+    bottom: -100vh; /* Déplacer la div hors de l'écran */
+    left: 0;
+    transition: bottom 0.5s ease; /* Ajouter une transition pour un effet de smooth */
+}
+
+.add_page .title{
+    margin-top: 2rem;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.add_page .close{
+    color: #fff;
+    background-color: #000;
+    border-radius: 50%;
+    padding: 20px 21px;
+    font-size: 1.2rem;
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+form{
+    margin-top: 3rem;
+    width: 100%;
+}
+
+table{
+    width: 100%;
+}
+
+
+input{
+    width: 100%;
+    outline: none;
+    border: solid 1px var(--global_grey_color_input);
+    padding: 12px 20px;
+    border-radius: var(--global_border_radius);
+    margin: .5rem 0 2rem 0;
+}
+
+input::placeholder{
+    color: var(--global_grey_color_input);
+    font-size: .9rem;
+    font-family: 'Albert Sans';
+}
+
+select{
+    width: 100%;
+    border: solid 1px var(--global_grey_color_input);
+    padding: 12px 20px;
+    border-radius: var(--global_border_radius);
+    margin: .5rem 0 2rem 0;
+}
+
+select option {
+    font-family: 'Albert Sans', sans-serif;
+}
+
+button{
+    width: 100%;
+    padding: 12px;
+    background-color: var(--global_secondary_color);
+    color: var(--global_background_color);
+    display: block;
+    margin: 0 auto;
+    border-radius: var(--global_border_radius);
+    font-size: .95rem;
+}
+
+#habit-category{
+    font-size: .9rem;
+    font-family: 'Albert Sans';
+}
+
+.img_add_page{
+    width: 17rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.show_add_page{
+    bottom: 0; /* Afficher la div avec l'effet de smooth */
+}

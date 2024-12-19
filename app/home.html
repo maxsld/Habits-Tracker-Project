@@ -12,8 +12,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page d'accueil</title>
+    <link rel="stylesheet" href="assets/css/home.css">
 </head>
 <body>
+
+    <div class="header">
+        <a href="#"><img src="assets/img/profile.png" alt="" srcset=""></a>
+    </div>
+
+    <p class="title">Bonjour, {name} 😁</p>
+    <p class="subtitle">Prêt pour devenir meilleur que hier ?</p>
+    <div class="graph_container"><img class="graph" src="assets/img/smiley_index.png" alt=""></div>
+    <div class="program_day" id="program_day">
+        <div class="header_program_day">
+            <p class="title">Programme de la journée</p>
+            <a href="#" id="see_all_program"><i class="fa-solid fa-arrow-up"></i></a>
+        </div>
+        <div class="program_card_container">
+            <div class="program_card">
+                <p class="title">Boire de l'eau</p>
+                <p class="subtitle">2L</p>
+            </div>
+            <div class="icon-container-main">
+                <div class="icon-container check">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div class="icon-container cross">
+                    <i class="fa-solid fa-times"></i>
+                </div>
+                <div class="icon-container delete">
+                    <i class="fa-solid fa-trash"></i>
+                </div>
+            </div>
+        </div>
+        <div class="program_card_container">
+            <div class="program_card">
+                <p class="title">Boire de l'eau</p>
+                <p class="subtitle">2L</p>
+            </div>
+            <div class="icon-container-main">
+                <div class="icon-container check">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div class="icon-container cross">
+                    <i class="fa-solid fa-times"></i>
+                </div>
+                <div class="icon-container delete">
+                    <i class="fa-solid fa-trash"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    <div class="navbar">
+        <a href="#"><i class="fa-solid fa-house"></i></a>
+        <a href="#" id="open_add_page"><i class="fa-solid fa-plus add"></i></a>
+        <a href="#"><i class="fa-solid fa-user-group"></i></a>
+    </div>
+
+    <div class="add_page" id="add_page">
+        <p class="title">Quelle est votre nouvelle habitude ?</p>
+    
+        <!-- Formulaire pour ajouter une nouvelle habitude -->
+        <form id="newHabitForm" class="habit-form">
+            <div class="form-group">
+                <label for="habit-name">Nom de l'habitude</label>
+                <input type="text" id="habit-name" name="habit-name" placeholder="Ex : Boire de l'eau" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="habit-description">Description</label>
+                <input id="habit-description" name="habit-description" placeholder="Décrivez votre habitude..." required></input>
+            </div>
+    
+            <div class="form-group">
+                <label for="habit-category">Catégorie</label>
+                <select id="habit-category" name="habit-category" required>
+                    <option value="santé">Santé</option>
+                    <option value="productivité">Productivité</option>
+                    <option value="loisirs">Loisirs</option>
+                    <option value="bien-être">Bien-être</option>
+                    <option value="autre">Autre</option>
+                </select>
+            </div>
+    
+            <button type="submit" class="submit-btn">Ajouter l'habitude</button>
+        </form>
+
+        <img class="img_add_page" src="assets/img/add_page_img.png" alt="">
+    
+        <!-- Bouton pour fermer la page -->
+        <a href="#" class="close" id="close_add_page"><i class="fa-solid fa-xmark"></i></a>
+    </div>
+    
+    
+
+    <script src="https://kit.fontawesome.com/ddff5b2124.js" crossorigin="anonymous"></script>
+    <script>
+     document.querySelectorAll('.program_card_container').forEach(card => {
+    let startX = 0, currentX = 0;
+
+    // Événements tactiles
+    card.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        e.preventDefault();
+    });
+
+    card.addEventListener('touchmove', (e) => {
+        currentX = e.touches[0].clientX;
+        const deltaX = currentX - startX;
+
+        if (deltaX < -30) { // Si glissement vers la gauche dépasse 30px
+            card.classList.add('swiped');
+            card.classList.remove('swiped-back');
+        } else if (deltaX > 30) { // Si glissement vers la droite dépasse 30px
+            card.classList.add('swiped-back');
+            card.classList.remove('swiped');
+        }
+
+        e.preventDefault();
+    });
+
+    card.addEventListener('touchend', () => {
+        // Rien à faire ici pour l'instant
+    });
+
+    // Événements souris
+    card.addEventListener('mousedown', (e) => {
+        startX = e.clientX;
+        e.preventDefault();
+    });
+
+    card.addEventListener('mousemove', (e) => {
+        if (startX === 0) return;
+
+        currentX = e.clientX;
+        const deltaX = currentX - startX;
+
+        if (deltaX < -30) {
+            card.classList.add('swiped');
+            card.classList.remove('swiped-back');
+        } else if (deltaX > 30) {
+            card.classList.add('swiped-back');
+            card.classList.remove('swiped');
+        }
+
+        e.preventDefault();
+    });
+
+    card.addEventListener('mouseup', () => {
+        startX = 0;
+    });
+});
+
+    </script>
+    <script>
+        document.getElementById('open_add_page').addEventListener('click', function() {
+        document.getElementById('add_page').classList.toggle('show_add_page');
+        });
+
+        document.getElementById('close_add_page').addEventListener('click', function() {
+        document.getElementById('add_page').classList.remove('show_add_page');
+        });
+
+
+        document.getElementById('see_all_program').addEventListener('click', function(event) {
+    event.preventDefault(); // Empêche le comportement par défaut du lien (rediriger)
+
+    var programDay = document.getElementById('program_day');
+    var button = document.getElementById('see_all_program');
+
+    // Basculer la classe 'show_program_day' pour afficher/masquer le programme
+    programDay.classList.toggle('show_program_day');
+
+    // Ajouter ou retirer la rotation de 180° sur le bouton
+    button.classList.toggle('rotated');
+});
+
+
+    </script>
     
 </body>
 </html>
