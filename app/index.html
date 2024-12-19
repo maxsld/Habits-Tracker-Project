@@ -1,19 +1,22 @@
 <script>
     fetch('assets/global.html')
-      .then(response => response.text())
-      .then(data => {
-        document.head.insertAdjacentHTML('beforeend', data);
-      });
-  </script>
+        .then(response => response.text())
+        .then(data => {
+            document.head.insertAdjacentHTML('beforeend', data);
+        });
+</script>
 
 
 
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
     <link rel="stylesheet" href="assets/css/index_style.css">
-  </head>
-  <body>
+    <script src="assets/utils/redirectIfAuthentificated.js"></script>
+</head>
+
+<body>
     <div class="index">
         <div class="index__header">
             <img src="assets/img/logo_vision.png" alt="">
@@ -28,10 +31,9 @@
         </div>
         <div class="bouton_container">
             <a class="start_button" href="signup.html">Commencer</a>
-            <p class="text_already_account">Vous avez déjà un compte ? <a href="connect.html">Se connecter</a></p>
+            <p class="text_already_account">Vous avez déjà un compte ? <a href="signin.html">Se connecter</a></p>
         </div>
     </div>
-  </body>
+</body>
 
-  </html>
-
+</html>

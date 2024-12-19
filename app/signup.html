@@ -1,19 +1,20 @@
 <script>
-    fetch('assets/global.html')
-      .then(response => response.text())
-      .then(data => {
-        document.head.insertAdjacentHTML('beforeend', data);
-      });
-  </script>
+    fetch("assets/global.html")
+        .then((response) => response.text())
+        .then((data) => {
+            document.head.insertAdjacentHTML("beforeend", data);
+        });
+</script>
 
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <link rel="stylesheet" href="assets/css/signup.css" />
+    <script src="assets/utils/redirectIfAuthentificated.js"></script>
+</head>
 
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <link rel="stylesheet" href="assets/css/signup.css">
-  </head>
-  <body>
+<body>
     <div class="connect">
         <div class="header_connect">
             <a href="#" id="backButton">
@@ -28,21 +29,23 @@
                 <table>
                     <tr>
                         <td>
-                            <label for="nom">Nom</label><br>
-                            <input type="text" id="nom" name="nom" required placeholder="Entrez votre nom">
+                            <label for="nom">Nom</label><br />
+                            <input type="text" id="nom" name="nom" required placeholder="Entrez votre nom" />
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="prenom">Prénom</label><br>
-                            <input type="text" id="prenom" name="prenom" required placeholder="Entrez votre prénom">
+                            <label for="prenom">Prénom</label><br />
+                            <input type="text" id="prenom" name="prenom" required placeholder="Entrez votre prénom" />
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="genre">Genre :</label><br>
+                            <label for="genre">Genre :</label><br />
                             <select id="genre" name="genre">
-                                <option value="" disabled selected>Veuillez sélectionner un genre</option>
+                                <option value="" disabled selected>
+                                    Veuillez sélectionner un genre
+                                </option>
                                 <option value="homme">Homme</option>
                                 <option value="femme">Femme</option>
                                 <option value="autre">Autre</option>
@@ -50,14 +53,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: center;">
-                            <button type="button" id="nextButton">Suivant <i class="fa-solid fa-arrow-right"></i></button>
+                        <td style="text-align: center">
+                            <button type="button" id="nextButton">
+                                Suivant <i class="fa-solid fa-arrow-right"></i>
+                            </button>
                         </td>
                     </tr>
                 </table>
             </form>
             <div id="errorMessage1" class="error-message"></div>
-            <p class="text_already_account">Vous avez déjà un compte ? <a href="connect.html">Se connecter</a></p>
+            <p class="text_already_account">
+                Vous avez déjà un compte ? <a href="signin.html">Se connecter</a>
+            </p>
         </div>
 
         <!-- Deuxième étape d'inscription (signup_container2) -->
@@ -67,25 +74,29 @@
                 <table>
                     <tr>
                         <td>
-                            <label for="email">Email</label><br>
-                            <input type="email" id="email" name="email" required placeholder="Entrez votre email">
+                            <label for="email">Email</label><br />
+                            <input type="email" id="email" name="email" required placeholder="Entrez votre email" />
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="password">Mot de passe</label><br>
-                            <input type="password" id="password" name="password" required placeholder="Entrez votre mot de passe">
+                            <label for="password">Mot de passe</label><br />
+                            <input type="password" id="password" name="password" required
+                                placeholder="Entrez votre mot de passe" />
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="confirm_password">Confirmer le mot de passe</label><br>
-                            <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirmez votre mot de passe">
+                            <label for="confirm_password">Confirmer le mot de passe</label><br />
+                            <input type="password" id="confirm_password" name="confirm_password" required
+                                placeholder="Confirmez votre mot de passe" />
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: center;">
-                            <button type="button" id="submitButton">Terminer <i class="fa-solid fa-check"></i></button>
+                        <td style="text-align: center">
+                            <button type="button" id="submitButton">
+                                Terminer <i class="fa-solid fa-check"></i>
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -95,127 +106,15 @@
 
         <!-- Troisième étape d'inscription (signup_container3) -->
         <div class="signup_container3">
-            <img src="assets/img/img_validation.png" alt="">
-            <p class="confirm_name">Bonjour John</p>
+            <img src="assets/img/img_validation.png" alt="" />
+            <p class="confirm_name"></p>
             <p class="title">Votre inscription à été validée !</p>
             <a class="start_button" href="home.html">Commencer</a>
         </div>
     </div>
 
     <script src="https://kit.fontawesome.com/ddff5b2124.js" crossorigin="anonymous"></script>
+    <script src="assets/js/signup.js"></script>
+</body>
 
-    <script>
-        const nextButton = document.getElementById('nextButton');
-        const backButton = document.getElementById('backButton');
-        const submitButton = document.getElementById('submitButton');
-        const signupContainer1 = document.querySelector('.signup_container1');
-        const signupContainer2 = document.querySelector('.signup_container2');
-        const signupContainer3 = document.querySelector('.signup_container3');
-        const errorMessage1 = document.getElementById('errorMessage1');
-        const errorMessage2 = document.getElementById('errorMessage2');
-        let onSignupContainer2 = false;
-
-        // Affiche un message d'erreur
-        function showErrorMessage(element, message) {
-            element.textContent = message;
-            element.style.display = 'block';
-        }
-
-        // Cache le message d'erreur
-        function hideErrorMessage(element) {
-            element.style.display = 'none';
-        }
-
-        // Bouton "Suivant" : vers signup_container2
-        nextButton.addEventListener('click', () => {
-            const nom = document.getElementById('nom').value.trim();
-            const prenom = document.getElementById('prenom').value.trim();
-            const genre = document.getElementById('genre').value;
-
-            if (nom === '' || prenom === '' || !genre) {
-                showErrorMessage(errorMessage1, "Veuillez remplir tous les champs avant de continuer.");
-                return; // Ne continue pas si un champ est vide
-            }
-
-            hideErrorMessage(errorMessage1); // Cache le message d'erreur
-            signupContainer1.style.left = '-150vw';
-            signupContainer2.style.left = '2.3rem';
-            onSignupContainer2 = true;
-        });
-
-        // Bouton "Retour"
-        backButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            if (onSignupContainer2) {
-                signupContainer1.style.left = '2.3rem';
-                signupContainer2.style.left = '150vw';
-                onSignupContainer2 = false;
-            } else {
-                window.location.href = 'index.html'; // Redirige vers l'accueil
-            }
-        });
-
-        // Vérifie si une chaîne est une adresse email valide
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        // Vérifie si une chaîne est une adresse email valide
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        // Vérifie si un mot de passe respecte les règles de sécurité
-        function isValidPassword(password) {
-        // Vérifie un mot de passe avec majuscule, chiffre, caractère spécial, et longueur >= 8
-        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#])[A-Za-z\d@$!%*?&^#]{8,}$/;
-        return passwordRegex.test(password);
-        }
-
-        // Bouton "Terminer" avec validation
-        submitButton.addEventListener('click', () => {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm_password').value;
-
-            // Vérifie que l'email est valide
-            if (!isValidEmail(email)) {
-                showErrorMessage(errorMessage2, "Veuillez entrer une adresse email valide.");
-                return;
-            }
-
-            // Vérifie que le mot de passe respecte les règles
-            if (!isValidPassword(password)) {
-                showErrorMessage(
-                    errorMessage2,
-                    "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial."
-                );
-                return;
-            }
-
-            // Vérifie que les mots de passe correspondent
-            if (password !== confirmPassword) {
-                showErrorMessage(errorMessage2, "Les mots de passe ne correspondent pas. Veuillez réessayer.");
-                return;
-            }
-
-            hideErrorMessage(errorMessage2); // Cache le message d'erreur
-            submitButton.innerHTML = 'Chargement <i class="fa-solid fa-spinner loading-icon"></i>';
-
-            setTimeout(() => {
-                signupContainer2.style.left = '-150vw';
-                signupContainer3.style.left = '2.3rem';
-                backButton.style.display = 'none';
-            }, 1500); // Délai pour afficher l'icône de chargement
-        });
-
-
-
-
-    </script>
-  </body>
-
-  </html>
-
+</html>

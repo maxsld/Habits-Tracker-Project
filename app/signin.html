@@ -1,19 +1,22 @@
 <script>
     fetch('assets/global.html')
-      .then(response => response.text())
-      .then(data => {
-        document.head.insertAdjacentHTML('beforeend', data);
-      });
-  </script>
+        .then(response => response.text())
+        .then(data => {
+            document.head.insertAdjacentHTML('beforeend', data);
+        });
+</script>
 
 
 
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <link rel="stylesheet" href="assets/css/connect_style.css">
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="assets/css/signin.css">
+    <script src="assets/utils/redirectIfAuthentificated.js"></script>
+</head>
+
+<body>
     <div class="connect">
         <div class="header_connect">
             <a href="index.html">
@@ -23,22 +26,24 @@
 
         <div class="connect_container">
             <p class="title">Heureux de vous revoir !</p>
-            
-            <form action="/submit" method="POST">
+
+            <form id="signinForm">
                 <table>
                     <tr>
                         <td>
-                            <label for="nom">Identifiant / Email</label><br>
-                            <input type="text" id="id" name="id" required placeholder="Entrez votre identifiant / email">
+                            <label for="email">Email</label><br>
+                            <input type="email" id="email" name="email" required
+                                placeholder="Entrez votre email">
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="prenom">Mot de passe :</label><br>
-                            <input type="password" id="password" name="password" required placeholder="Entrez votre mot de passe">
+                            <label for="password">Mot de passe :</label><br>
+                            <input type="password" id="password" name="password" required
+                                placeholder="Entrez votre mot de passe">
                         </td>
                     </tr>
-                    
+
                     <tr>
                         <td style="text-align: center;">
                             <button type="submit">Se connecter</button>
@@ -50,12 +55,12 @@
             <a class="forget_password" href="#">Mot de passe oublié ?</a>
 
             <img class="img_firework" src="assets/img/firework.png" alt="">
-            
+
         </div>
     </div>
 
     <script src="https://kit.fontawesome.com/ddff5b2124.js" crossorigin="anonymous"></script>
-  </body>
+    <script src="assets/js/signin.js"></script>
+</body>
 
-  </html>
-
+</html>
