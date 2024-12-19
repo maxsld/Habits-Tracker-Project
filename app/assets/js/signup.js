@@ -130,15 +130,24 @@ submitButton.addEventListener("click", async () => {
     const result = await response.json();
 
     if (response.ok) {
+      submitButton.innerHTML = 'Chargement <i class="fa-solid fa-spinner loading-icon"></i>';
+            
+            setTimeout(() => {
+                signupContainer2.style.left = '-150vw';
+                signupContainer3.style.left = '2.3rem';
+                backButton.style.display = 'none'
+                backButton.style.display = 'none';
+            }, 1500); // Délai pour afficher l'icône de chargement
       // Succès
       signupContainer2.style.left = "-150vw";
       signupContainer3.style.left = "2.3rem";
       backButton.style.display = "none";
-      submitButton.innerHTML = 'Terminer <i class="fa-solid fa-check"></i>';
       const formattedFirstName = userFirstName.charAt(0).toUpperCase() + userFirstName.slice(1).toLowerCase();
       signupContainer3.querySelector(".confirm_name").textContent = `Bonjour ${formattedFirstName}`;
       document.cookie = `token=${result.token}; path=/; secure; SameSite=Strict; max-age=3600`;
       document.cookie = `userId=${result.userId}; path=/; secure; SameSite=Strict; max-age=3600`;
+      
+        
     } else {
       // Erreur renvoyée par l'API
       showErrorMessage(errorMessage2, result.error);

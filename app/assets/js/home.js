@@ -44,6 +44,9 @@ document
   .getElementById("close_add_page")
   .addEventListener("click", function () {
     document.getElementById("add_page").classList.remove("show_add_page");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   });
 
 document
