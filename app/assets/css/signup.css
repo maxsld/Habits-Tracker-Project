@@ -24,6 +24,14 @@
     font-size: 2.2rem;
 }
 
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: .5rem;
+    display: none; /* Masqué par défaut */
+    text-align: center;
+}
+
 
 form{
     margin-top: 3rem;
