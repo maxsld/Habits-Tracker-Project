@@ -42,8 +42,9 @@ body {
 }
 
 .graph{
-    width: 80%;
-    margin: 0 auto;
+    text-align: center;
+    font-size: 10rem;
+    padding: 2rem;
 }
 
 .program_day {
