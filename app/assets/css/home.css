@@ -59,7 +59,7 @@ body {
     left: 0%;
     padding: 30px 40px;
     overflow-y: auto;
-    animation: slideUp .5s ease-out forwards; /* Animation pour faire monter le texte */
+    animation: slideUp .3s ease-out forwards; /* Animation pour faire monter le texte */
 }
 
 @keyframes slideUp {
