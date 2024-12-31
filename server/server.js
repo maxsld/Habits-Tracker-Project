@@ -142,15 +142,9 @@ app.post("/api/verifyToken", async (req, res) => {
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
 
     if (user) {
-      console.log("User found:", user);
-
       // Check if the token is in the user's token list
       const results = await Promise.all(
         user.tokens.map((storedToken) => {
-          console.log("Comparing plaintext token with storedToken:", {
-            token,
-            storedToken,
-          });
           return bcrypt.compare(token, storedToken); // Compare plaintext token with hashed token
         })
       );
@@ -329,6 +323,52 @@ app.post("/api/getUserInfo", async (req, res) => {
   } catch (error) {
     console.error("Error fetching user info:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST route to add friend
+app.post("/api/addFriends", async (req, res) => {
+  const { userId, friendCode } = req.body;
+
+  if (!friendCode || !userId) {
+    return res.status(400).json({ error: "Friend code or user ID is missing" });
+  }
+
+  try {
+    const usersCollection = await connectToDb();
+    const friend = await usersCollection.findOne({
+      codAmi: parseInt(friendCode, 10),
+    });
+
+    if (!friend) {
+      return res.status(404).json({ error: "Friend not found" });
+    }
+
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (user.friends.some((friendId) => friendId.equals(friend._id))) {
+      return res
+        .status(400)
+        .json({ error: "Friend is already in your friends list" });
+    }
+
+    // Add the friend to the user's friends list
+    await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $push: { friends: friend._id } } // Add friend's _id to the user's friends list
+    );
+
+    // Respond with success message
+    return res.status(200).json({ message: "Friend added successfully" });
+  } catch (error) {
+    console.error("Error adding friend:", error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while adding the friend" });
   }
 });
 
