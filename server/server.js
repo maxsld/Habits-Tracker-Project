@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const { MongoClient, ObjectId } = require("mongodb");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const app = express();
 const port = 5000;
@@ -49,8 +50,25 @@ app.post("/api/signup", async (req, res) => {
   // Hash the password before saving it
   const hashedPassword = await bcrypt.hash(password, 10);
 
+  // Create the unique CodAmi
+  const generateCodAmi = () => {
+    return Math.floor(100000 + Math.random() * 900000);
+  };
+
+  let codeami;
+  let isUnique = false;
+
+  while (!isUnique) {
+    codeami = generateCodAmi();
+    const existingCodAmi = await usersCollection.findOne({ codAmi: codeami });
+    if (!existingCodAmi) {
+      isUnique = true;
+    }
+  }
+
   // Add the new user to the database
   const result = await usersCollection.insertOne({
+    codAmi: codeami,
     lastName,
     firstName,
     gender,
@@ -59,15 +77,18 @@ app.post("/api/signup", async (req, res) => {
     tokens: [],
     habits: [],
     emojiChecked: false,
+    emojiDay: null,
+    friends: [],
   });
 
-  // Generate a token using the user's inserted ID
-  const token = await bcrypt.hash(result.insertedId.toString(), 10);
+  // Generate a token for the user
+  const token = crypto.randomBytes(32).toString("hex");
 
-  // Save the token to the user's document
+  const hashedToken = await bcrypt.hash(token, 10);
+
   await usersCollection.updateOne(
     { _id: result.insertedId },
-    { $push: { tokens: token } }
+    { $push: { tokens: hashedToken } }
   );
 
   res.json({ token, userId: result.insertedId });
@@ -97,52 +118,55 @@ app.post("/api/signin", async (req, res) => {
   }
 
   // Generate a token for the user
-  const token = await bcrypt.hash(existingUser._id.toString(), 10);
+  const token = crypto.randomBytes(32).toString("hex");
 
-  // Add the generated token to the user's document
+  const hashedToken = await bcrypt.hash(token, 10);
+
   await usersCollection.updateOne(
     { _id: existingUser._id },
-    { $push: { tokens: token } }
+    { $push: { tokens: hashedToken } }
   );
 
   res.json({ token, userId: existingUser._id });
 });
 
-// POST route to verify a token
 app.post("/api/verifyToken", async (req, res) => {
   const { token, userId } = req.body;
 
-  // Ensure both token and userId are provided
   if (!token || !userId) {
     return res.status(400).json({ error: "Token or userId is missing" });
   }
 
   try {
-    // Connect to the database
     const usersCollection = await connectToDb();
-
-    // Check if a user exists with the provided userId
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
 
     if (user) {
+      console.log("User found:", user);
+
       // Check if the token is in the user's token list
-      const tokenExists = user.tokens.some(
-        async (storedToken) => await bcrypt.compare(token, storedToken)
+      const results = await Promise.all(
+        user.tokens.map((storedToken) => {
+          console.log("Comparing plaintext token with storedToken:", {
+            token,
+            storedToken,
+          });
+          return bcrypt.compare(token, storedToken); // Compare plaintext token with hashed token
+        })
       );
 
+      console.log("Comparison results:", results);
+      const tokenExists = results.some(Boolean);
+
       if (tokenExists) {
-        // Token is valid
         return res.json({ valid: true });
       } else {
-        // Token is invalid or expired
         return res.json({ valid: false });
       }
     } else {
-      // No user found with the provided userId
       return res.status(404).json({ error: "User not found" });
     }
   } catch (error) {
-    // Handle any errors during token verification (e.g., database issues)
     console.error("Error during token verification:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -208,8 +232,7 @@ app.post("/api/deleteHabit", async (req, res) => {
   // Ensure both userId and habitName are provided
   if (!userId || !habitName) {
     return res.status(400).json({
-      error:
-        "User ID or habit's name is missing",
+      error: "User ID or habit's name is missing",
     });
   }
 
@@ -223,7 +246,9 @@ app.post("/api/deleteHabit", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const habitIndex = user.habits.findIndex(habit => habit.habitName.toLowerCase() === habitName.toLowerCase());
+    const habitIndex = user.habits.findIndex(
+      (habit) => habit.habitName.toLowerCase() === habitName.toLowerCase()
+    );
 
     if (habitIndex === -1) {
       return res.status(404).json({ error: "Habit not found" });
@@ -236,9 +261,7 @@ app.post("/api/deleteHabit", async (req, res) => {
       { $set: { habits: user.habits } }
     );
 
-    res
-      .status(200)
-      .json({ message: "Habit deleted successfully" });
+    res.status(200).json({ message: "Habit deleted successfully" });
   } catch (error) {
     // Handle any errors during token verification (e.g., database issues)
     console.error("Error during habit deletion:", error);
@@ -250,10 +273,9 @@ app.post("/api/saveEmoji", async (req, res) => {
   const { userId, emojiDay } = req.body;
 
   // Ensure both token and userId are provided
-  if (!userId || !emojiDay ) {
+  if (!userId || !emojiDay) {
     return res.status(400).json({
-      error:
-        "User ID or emoji day is missing",
+      error: "User ID or emoji day is missing",
     });
   }
 
@@ -272,9 +294,7 @@ app.post("/api/saveEmoji", async (req, res) => {
       { $set: { emojiDay, emojiChecked: true } }
     );
 
-    res
-      .status(200)
-      .json({ message: "Emoji day saved successfully" });
+    res.status(200).json({ message: "Emoji day saved successfully" });
   } catch (error) {
     // Handle any errors during token verification (e.g., database issues)
     console.error("Error during emoji day saving:", error);
@@ -284,33 +304,33 @@ app.post("/api/saveEmoji", async (req, res) => {
 
 // POST route to get user's info
 app.post("/api/getUserInfo", async (req, res) => {
-    const { userId } = req.body;
+  const { userId } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ error: "User ID is missing" });
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is missing" });
+  }
+
+  try {
+    const usersCollection = await connectToDb();
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    try {
-      const usersCollection = await connectToDb();
-      const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
-
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-
-      res.json({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        habits: user.habits,
-        emojiDay: user.emojiDay,
-        emojiChecked: user.emojiChecked
-      });
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  });
+    res.json({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      habits: user.habits,
+      emojiDay: user.emojiDay,
+      emojiChecked: user.emojiChecked,
+    });
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Start the server
 app.listen(port, () => {
