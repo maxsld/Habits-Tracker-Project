@@ -109,6 +109,14 @@ body {
     transition: transform 0.3s ease; /* Animation de la carte */
 }
 
+.status-true {
+    background-color: green;
+}
+
+.status-false {
+    background-color: red;
+}
+
 .program_card .title {
     font-size: 1rem;
     margin-top: 0rem;

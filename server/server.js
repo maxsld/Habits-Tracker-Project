@@ -203,6 +203,7 @@ app.post("/api/newHabit", async (req, res) => {
       habitName,
       habitDescription,
       habitCategory,
+      habitStatus: null,
     };
 
     await usersCollection.updateOne(
@@ -259,6 +260,49 @@ app.post("/api/deleteHabit", async (req, res) => {
   } catch (error) {
     // Handle any errors during token verification (e.g., database issues)
     console.error("Error during habit deletion:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/api/updateHabit", async (req, res) => {
+  const { userId, habitName, status } = req.body;
+
+  // Ensure both userId and habitName are provided
+  if (!userId || !habitName || status === undefined) {
+    return res.status(400).json({
+      error: "User ID, habit's name or status is missing",
+    });
+  }
+
+  try {
+    // Connect to the database
+    const usersCollection = await connectToDb();
+
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const habitIndex = user.habits.findIndex(
+      (habit) => habit.habitName.toLowerCase() === habitName.toLowerCase()
+    );
+
+    if (habitIndex === -1) {
+      return res.status(404).json({ error: "Habit not found" });
+    }
+
+    user.habits[habitIndex].habitStatus = status;
+
+    await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { habits: user.habits } }
+    );
+
+    res.status(200).json({ message: "Habit updated successfully" });
+  } catch (error) {
+    // Handle any errors during token verification (e.g., database issues)
+    console.error("Error during habit update:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
