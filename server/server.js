@@ -397,6 +397,7 @@ app.post("/api/getUserInfo", async (req, res) => {
       emojiDay: user.emojiDay,
       emojiChecked: user.emojiChecked,
       friends: user.friends,
+      streak: user.streak,
     });
   } catch (error) {
     console.error("Error fetching user info:", error);

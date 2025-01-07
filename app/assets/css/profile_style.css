@@ -385,6 +385,7 @@
     padding: 20px 20px 100px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 1rem;
+    margin-top: 2rem;
 }
 
 .circle {
@@ -462,8 +463,8 @@
 .stat__progress::before {
     content: '';
     position: absolute;
-    width: 33%;
+    width: var(--progress-width, 0);
     height: 5px;
-    background-color: rgb(149, 28, 28);
+    background-color: var(--progress-color, rgb(145, 145, 145));
     border-radius: 1rem;
 }

@@ -63,6 +63,26 @@ fetch("http://localhost:5000/api/getUserInfo", {
     return response.json();
   })
   .then((data) => {
+
+    const progressRank = document.getElementById("progressRank");
+    const progressPourcent = (data.streak * 100) / 90; // Calculate the percentage
+
+    let progressColor;
+
+    if (progressPourcent <= 30) {
+        progressColor = "#FF7F00"; // Orange
+    } else if (progressPourcent <= 60) {
+        progressColor = "#FFBB00"; // Jaune
+    } else if (progressPourcent <= 90) {
+        progressColor = "#3AC20D"; // Vert
+    } else {
+        progressColor = "#AF2BDF"; // Violet
+    }
+
+
+    progressRank.style.setProperty("--progress-width", `${progressPourcent}%`);
+    progressRank.style.setProperty("--progress-color", progressColor);
+
     const programDayContainer = document.getElementById("profile__friends");
     if (programDayContainer && data.friends) {
       data.friends.forEach((friend) => {
@@ -194,23 +214,23 @@ fetch("http://localhost:5000/api/getUserInfo", {
     localStorage.setItem('activeTab', 'rang-tab'); // Stocker l'ID de l'onglet à activer
     window.location.href = 'profile.html'; // Rediriger vers profile.html ou la page que vous souhaitez
   });
-  
+
   document.addEventListener("DOMContentLoaded", function () {
     const tabs = document.querySelectorAll(".profile__tab");
     const contents = document.querySelectorAll(".profile__tabs-content > div");
-  
+
     // Fonction pour changer d'onglet
     function changeTab(event) {
       const target = event.target;
-  
+
       tabs.forEach((tab) => tab.classList.remove("active"));
       contents.forEach((content) => content.classList.remove("active"));
-  
+
       target.classList.add("active");
       const index = Array.from(tabs).indexOf(target);
       contents[index].classList.add("active");
     }
-  
+
     // Activer l'onglet spécifié dans localStorage
     const activeTabId = localStorage.getItem("activeTab");
     if (activeTabId) {
@@ -219,7 +239,7 @@ fetch("http://localhost:5000/api/getUserInfo", {
         // Activer l'onglet
         tabs.forEach((tab) => tab.classList.remove("active"));
         contents.forEach((content) => content.classList.remove("active"));
-  
+
         activeTab.classList.add("active");
         const index = Array.from(tabs).indexOf(activeTab);
         if (index >= 0) {
@@ -228,10 +248,9 @@ fetch("http://localhost:5000/api/getUserInfo", {
       }
       localStorage.removeItem("activeTab"); // Nettoyer le stockage après utilisation
     }
-  
+
     // Ajouter des écouteurs pour les clics sur les onglets
     tabs.forEach((tab) => {
       tab.addEventListener("click", changeTab);
     });
   });
-  
