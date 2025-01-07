@@ -13,21 +13,24 @@
   </head>
   <body>
     <div class="profile">
-        <a href="#">
-            <i class="fa-solid fa-arrow-left back"></i>
-        </a>
+
         <div class="profile__header">
+            <a href="home.html">
+                <i class="fa-solid fa-arrow-left back"></i>
+            </a>
             <p>Mon espace</p>
+            <a href="#">
+                <i class="fa-solid fa-gear settings"></i>
+            </a>
         </div>
-        <a href="#">
-            <i class="fa-solid fa-gear settings"></i>
-        </a>
+
+
         <div class="profile__img">
             <img src="assets/img/profile.png" alt="">
         </div>
         <div class="profile__tabs">
             <div class="profile__tab active">Stats</div>
-            <div class="profile__tab">Amis</div>
+            <div class="profile__tab" id="friends-tab">Amis</div>
             <div class="profile__tab">Rang</div>
         </div>
         <div class="profile__tabs-content">

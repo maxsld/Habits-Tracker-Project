@@ -332,3 +332,10 @@ fetch("http://localhost:5000/api/getUserInfo", {
   .catch((error) => {
     console.error("Error fetching user info:", error);
   });
+
+
+  document.getElementById('link_friends_tab').addEventListener('click', function (event) {
+    event.preventDefault(); // Empêcher la redirection par défaut
+    localStorage.setItem('activeTab', 'friends-tab'); // Stocker l'ID de l'onglet à activer
+    window.location.href = 'profile.html'; // Rediriger vers profile.html
+});

@@ -5,9 +5,8 @@
 }
 
 .back {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: var(--global_secondary_color);
-    position: absolute;
     top: 2rem;
     left: 2.5rem;
 }
@@ -17,7 +16,7 @@
     width: 100%;
     padding-top: 2.1rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     font-size: 1rem;
     font-weight: 600;
@@ -26,7 +25,6 @@
 .settings {
     font-size: 1.5rem;
     color: var(--global_secondary_color);
-    position: absolute;
     top: 2rem;
     right: 2.5rem;
 }
