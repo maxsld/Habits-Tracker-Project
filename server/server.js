@@ -266,6 +266,37 @@ app.post("/api/deleteHabit", async (req, res) => {
   }
 });
 
+app.post("/api/deleteFriend", async (req, res) => {
+  const { userId, friendId } = req.body;
+
+  // Ensure both userId and habitName are provided
+  if (!userId || !friendId) {
+    return res.status(400).json({
+      error: "User ID or friend ID is missing",
+    });
+  }
+
+  try {
+    // Connect to the database
+    const usersCollection = await connectToDb();
+
+    const result = await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $pull: { friends: new ObjectId(friendId) } }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "Friend not found" });
+    }
+
+    res.status(200).json({ message: "Friend deleted successfully" });
+  } catch (error) {
+    // Handle any errors during token verification (e.g., database issues)
+    console.error("Error during friend deletion:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/api/updateHabit", async (req, res) => {
   const { userId, habitName, status } = req.body;
 

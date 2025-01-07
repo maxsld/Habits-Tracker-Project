@@ -5,8 +5,9 @@
 }
 
 .back {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: var(--global_secondary_color);
+    position: absolute;
     top: 2rem;
     left: 2.5rem;
 }
@@ -16,7 +17,7 @@
     width: 100%;
     padding-top: 2.1rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     font-size: 1rem;
     font-weight: 600;
@@ -25,6 +26,7 @@
 .settings {
     font-size: 1.5rem;
     color: var(--global_secondary_color);
+    position: absolute;
     top: 2rem;
     right: 2.5rem;
 }
@@ -64,7 +66,9 @@
     color: #ffffff;
 }
 
-.profile__tab-stats, .profile__tab-friend, .profile__tab-rank {
+.profile__tab-stats,
+.profile__tab-friend,
+.profile__tab-rank {
     display: none;
 }
 
@@ -164,7 +168,8 @@
     align-items: center;
 }
 
-.profile__friend__settings__message, .profile__friend__settings__delete {
+.profile__friend__settings__message,
+.profile__friend__settings__delete {
     width: 4.5rem;
     height: 100%;
     display: flex;
@@ -180,7 +185,9 @@
 .profile__friend__settings__delete {
     background-color: var(--global_red_color);
 }
-.profile__friend__settings__message i, .profile__friend__settings__delete i {
+
+.profile__friend__settings__message i,
+.profile__friend__settings__delete i {
     color: #ffffff;
     font-size: 1.3rem;
 }
@@ -192,7 +199,10 @@
     position: relative;
     transition: transform 0.3s ease;
 }
+
 .program_card {
+    display: flex;
+    align-items: center;
     width: 100%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 1rem;
@@ -200,7 +210,22 @@
     margin-top: 1rem;
     background-color: #fdfdfd;
     overflow: hidden;
-    transition: transform 0.3s ease; /* Animation de la carte */
+    transition: transform 0.3s ease;
+    /* Animation de la carte */
+}
+
+.program_card img {
+    height: 50px;
+    margin-right: .5rem;
+}
+
+.program_card p {
+    font-size: 1.5rem;
+    text-transform: capitalize;
+}
+
+.program_card p.p1 {
+    margin-right: .25rem;
 }
 
 .program_card .title {
@@ -209,13 +234,17 @@
 }
 
 .icon-container-main {
-    display: flex; /* Alignement des icônes côte à côte */
-    gap: 10px; /* Espace entre les icônes */
+    display: flex;
+    /* Alignement des icônes côte à côte */
+    gap: 10px;
+    /* Espace entre les icônes */
     position: absolute;
     top: 58%;
     transform: translateY(-50%);
-    right: -50px; /* Les icônes sont placées initialement à droite */
-    transition: right 0.3s ease; /* Animation de l'apparition des icônes */
+    right: -50px;
+    /* Les icônes sont placées initialement à droite */
+    transition: right 0.3s ease;
+    /* Animation de l'apparition des icônes */
 }
 
 /* Icône individuelle */
@@ -223,51 +252,56 @@
     font-size: 24px;
     padding: 15px;
     border-radius: 1rem;
-    display: none; /* Les icônes sont cachées au départ */
-    transition: transform 0.3s ease; /* Animation de la carte */
+    display: none;
+    /* Les icônes sont cachées au départ */
+    transition: transform 0.3s ease;
+    /* Animation de la carte */
 }
 
 /* Icône "Check" */
-.icon-container.check {
-    background-color: #3AC20D; /* Vert */
+.icon-container.lock {
+    background-color: #828282;
+    /* Vert */
     color: #fff;
     padding: 20px;
 }
 
 /* Icône "Delete" */
 .icon-container.delete {
-    background-color: var(--global_secondary_color); /* Rouge */
-    color: #fff;
-    padding: 20px;
-}
-
-/* Icône "Cross" */
-.icon-container.cross {
-    background-color: #FF4C4C; /* Orange */
+    background-color: var(--global_secondary_color);
+    /* Rouge */
     color: #fff;
     padding: 20px;
 }
 
 /* Lors du glissement vers la gauche */
 .program_card_container.swiped .icon-container-main {
-    right: -220px; /* Déplace le conteneur d'icônes vers la droite */
-    transition: transform 0.3s ease; /* Animation de la carte */
+    right: -220px;
+    /* Déplace le conteneur d'icônes vers la droite */
+    transition: transform 0.3s ease;
+    /* Animation de la carte */
 }
 
 .program_card_container.swiped .icon-container {
-    display: block; /* Affiche chaque icône */
-    transform: translateX(0); /* Animation des icônes */
+    display: block;
+    /* Affiche chaque icône */
+    transform: translateX(0);
+    /* Animation des icônes */
 }
 
 
 /* Glissement de la carte */
 .program_card_container.swiped {
-    transform: translateX(-200px); /* La carte glisse vers la gauche */
-    transition: transform 0.3s ease-in; /* Animation de la carte */
+    transform: translateX(-200px);
+    /* La carte glisse vers la gauche */
+    transition: transform 0.3s ease-in;
+    /* Animation de la carte */
 }
 
 /* Retour de la carte à la position d'origine */
 .program_card_container.swiped-back {
-    transform: translateX(0px); /* La carte glisse vers la droite */
-    transition: transform 0.3s ease; /* Animation de la carte */
+    transform: translateX(0px);
+    /* La carte glisse vers la droite */
+    transition: transform 0.3s ease;
+    /* Animation de la carte */
 }
