@@ -23,7 +23,7 @@
     font-weight: 600;
 }
 
-.settings {
+.log_out {
     font-size: 1.5rem;
     color: var(--global_secondary_color);
     position: absolute;
