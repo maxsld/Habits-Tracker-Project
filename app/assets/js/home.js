@@ -184,7 +184,7 @@ fetch("http://localhost:5000/api/getUserInfo", {
     if (nameElement) {
       const capitalize = (str) =>
         str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-      nameElement.innerHTML = `Bonjour, ${capitalize(data.firstName)} 😁`;
+      nameElement.innerHTML = `Bonjour, ${capitalize(data.firstName)}`;
     }
 
     const programDayContainer = document.getElementById("program_day");
@@ -375,4 +375,3 @@ window.addEventListener('load', function () {
       document.getElementById('content').style.display = 'block';
   }, 750); // 1 second delay
 });
-
