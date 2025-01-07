@@ -239,55 +239,60 @@ fetch("http://localhost:5000/api/getUserInfo", {
 
         const checkButton = habitCard.querySelector(".check");
         checkButton.addEventListener("click", async () => {
-          // Requête pour mettre le statut de l'habitude en "check"
-          await fetch("http://localhost:5000/api/updateHabit", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId,
-              habitName: habit.habitName,
-              status: true,
-            }),
-          });
+          try {
+            // Requête pour mettre le statut de l'habitude en "check"
+            const response = await fetch("http://localhost:5000/api/updateHabit", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId,
+                habitName: habit.habitName,
+                status: true,
+              }),
+            });
 
-          await fetch("http://localhost:5000/api/saveHistory", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId,
-            }),
-          });
+            // Vérification que la requête a réussi
+            if (response.ok) {
+              // Rechargement de la page après mise à jour réussie
+              window.location.reload();
+            } else {
+              console.error("Erreur lors de la mise à jour de l'habitude");
+            }
+          } catch (error) {
+            console.error("Erreur réseau :", error);
+          }
         });
 
         const crossButton = habitCard.querySelector(".cross");
         crossButton.addEventListener("click", async () => {
-          // Requête pour mettre le statut de l'habitude en "cross"
-          await fetch("http://localhost:5000/api/updateHabit", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId,
-              habitName: habit.habitName,
-              status: false,
-            }),
-          });
-          await fetch("http://localhost:5000/api/saveHistory", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId,
-            }),
-          });
+          try {
+            // Requête pour mettre le statut de l'habitude en "check"
+            const response = await fetch("http://localhost:5000/api/updateHabit", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId,
+                habitName: habit.habitName,
+                status: false,
+              }),
+            });
+
+            // Vérification que la requête a réussi
+            if (response.ok) {
+              // Rechargement de la page après mise à jour réussie
+              window.location.reload();
+            } else {
+              console.error("Erreur lors de la mise à jour de l'habitude");
+            }
+          } catch (error) {
+            console.error("Erreur réseau :", error);
+          }
         });
-      });
+
 
       document.querySelectorAll(".program_card_container").forEach((card) => {
         let startX = 0,
@@ -346,7 +351,7 @@ fetch("http://localhost:5000/api/getUserInfo", {
           startX = 0;
         });
       });
-    }
+    })}
   })
   .catch((error) => {
     console.error("Error fetching user info:", error);
@@ -370,3 +375,4 @@ window.addEventListener('load', function () {
       document.getElementById('content').style.display = 'block';
   }, 750); // 1 second delay
 });
+
