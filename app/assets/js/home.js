@@ -9,32 +9,48 @@ function getCookieValue(name) {
 
 const userId = getCookieValue("userId");
 
-document
-  .getElementById("newHabitForm")
-  .addEventListener("submit", async (event) => {
-    event.preventDefault();
+document.getElementById("newHabitForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-    const habitName = document.getElementById("habit-name").value.toLowerCase();
-    const habitDescription = document
-      .getElementById("habit-description")
-      .value.toLowerCase();
-    const habitCategory = document
-      .getElementById("habit-category")
-      .value.toLowerCase();
+  const habitName = document.getElementById("habit-name").value.toLowerCase();
+  const habitDescription = document.getElementById("habit-description").value.toLowerCase();
+  const habitCategory = document.getElementById("habit-category").value.toLowerCase();
+  const submitButton = document.getElementById("submit-btn");
 
-    await fetch("http://localhost:5000/api/newHabit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId,
-        habitName,
-        habitDescription,
-        habitCategory,
-      }),
-    });
+  // Fonction pour ajouter un délai
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  // Afficher l'icône de chargement sur le bouton
+  submitButton.innerHTML = '<i class="fa-solid fa-spinner loading-icon"></i> Chargement';
+
+  // Attendre 1,5 secondes avant de mettre à jour le bouton avec l'icône de succès
+  await delay(2000);
+
+  // Mettre à jour le texte du bouton avec l'icône de validation
+  submitButton.innerHTML = '<i class="fa-solid fa-check"></i> Terminé';
+  submitButton.style.backgroundColor="green";
+
+  // Attendre 1 seconde avant de revenir à l'état normal du bouton
+  await delay(2000);
+
+  // Réinitialiser l'état du bouton
+  submitButton.innerHTML = 'Ajouter une nouvelle habitude';
+  submitButton.style.backgroundColor="";
+
+  // Envoyer la requête POST à l'API
+  await fetch("http://localhost:5000/api/newHabit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId,
+      habitName,
+      habitDescription,
+      habitCategory,
+    }),
   });
+});
 
 document.getElementById("open_add_page").addEventListener("click", function () {
   document.getElementById("add_page").classList.toggle("show_add_page");
@@ -135,28 +151,33 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCarousel();
 
   // Ajouter l'événement de clic pour le bouton de validation
-  const validateBtn = document.getElementById("validate-btn-emoji");
-  const feeling_today_page = document.getElementById("feeling_today_page");
-  validateBtn.addEventListener("click", async () => {
-    const selectedEmoji = emojis[currentIndex].textContent;
-    await fetch("http://localhost:5000/api/saveEmoji", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId,
-        emojiDay: selectedEmoji,
-      }),
-    });
-    feeling_today_page.style.display = "none";
+ // Ajouter l'événement de clic pour le bouton de validation
+const validateBtn = document.getElementById("validate-btn-emoji");
+const feeling_today_page = document.getElementById("feeling_today_page");
+
+validateBtn.addEventListener("click", async () => {
+  const selectedEmoji = emojis[currentIndex].textContent;
+  
+  // Envoi de la requête POST pour sauvegarder l'emoji sélectionné
+  await fetch("http://localhost:5000/api/saveEmoji", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId,
+      emojiDay: selectedEmoji,
+    }),
   });
 
-  const pastBtn = document.getElementById("past_feeling_page");
-  pastBtn.addEventListener("click", () => {
-    feeling_today_page.style.display = "none";
-  });
+  // Masquer la page de sélection des émotions
+  feeling_today_page.style.display = "none";
+
+  // Recharger la page après l'envoi de la requête
+  window.location.reload();
+})
 });
+
 
 fetch("http://localhost:5000/api/getUserInfo", {
   method: "POST",

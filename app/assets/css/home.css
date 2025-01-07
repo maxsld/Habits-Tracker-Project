@@ -7,6 +7,21 @@ body {
     overflow-x: hidden;
 }
 
+/* Style pour l'icône de chargement */
+.loading-icon {
+    animation: spin 1s linear infinite;
+}
+
+/* Animation de rotation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 #loader {
     position: fixed;
     top: 0;
