@@ -75,6 +75,7 @@ body.loaded #loader {
     align-items: center;
     justify-content: center;
     margin-top: 1rem;
+    position: relative;
 }
 
 .graph{
@@ -82,6 +83,34 @@ body.loaded #loader {
     font-size: 10rem;
     padding: 2rem;
 }
+
+.progress-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.progress-circle {
+    transform: rotate(-90deg);
+}
+
+.circle-background {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 10;
+}
+
+.circle-progress {
+    fill: none;
+    stroke: url(#gradient);  /* Application du dégradé */
+    stroke-width: 10;
+    stroke-dasharray: 760;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
 
 .program_day {
     margin-top: 2rem;
@@ -109,6 +138,8 @@ body.loaded #loader {
         transform: translateY(0); /* L'élément revient à sa position d'origine */
     }
 }
+
+
 
 
 .header_program_day {
