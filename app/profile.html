@@ -31,7 +31,7 @@
         <div class="profile__tabs">
             <div class="profile__tab active">Stats</div>
             <div class="profile__tab" id="friends-tab">Amis</div>
-            <div class="profile__tab">Rang</div>
+            <div class="profile__tab" id="rang-tab">Rang</div>
         </div>
         <div class="profile__tabs-content">
             <div class="profile__tab-stats active">
@@ -49,7 +49,7 @@
                         <a href="add-friends.html">
                             <i class="fa-solid fa-user-plus"></i>
                         </a>
-                        <a href="#">Tableau des scores</a>
+                        <a href="#" id="link_rang">Tableau des scores</a>
                     </div>
                 </div>
                 <div class="profile__friends" id="profile__friends"></div>
@@ -57,8 +57,32 @@
             <div class="profile__tab-rank">
                 <div class="profile__title">
                     <p>Votre rang</p>
-                    <div class="profile__settings">
-
+                </div>
+                <div class="podium_container">
+                    <div class="podium2">
+                        <img src="assets/img/profile.png" alt="">
+                        <p class="name">Nom</p>
+                        <div class="design_podium2">
+                            <p class="rang">2</p>
+                            <p class="score">300</p>
+                        </div>
+                    </div>
+                    <div class="podium1">
+                        <img style="width: 40px; margin-bottom: -7px; z-index: 2;" src="assets/img/couronne.png" alt="">
+                        <img src="assets/img/profile.png" alt="">
+                        <p class="name">Nom</p>
+                        <div class="design_podium1">
+                            <p class="rang">1</p>
+                            <p class="score">350</p>
+                        </div>
+                    </div>
+                    <div class="podium3">
+                        <img src="assets/img/profile.png" alt="">
+                        <p class="name">Nom</p>
+                        <div class="design_podium3">
+                            <p class="rang">3</p>
+                            <p class="score">260</p>
+                        </div>
                     </div>
                 </div>
             </div>
