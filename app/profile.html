@@ -10,6 +10,7 @@
   <html lang="en">
   <head>
     <link rel="stylesheet" href="assets/css/profile_style.css">
+    <script src="assets/utils/redirectIfNoAuthentificated.js"></script>
   </head>
   <body>
     <div class="profile">
@@ -20,7 +21,7 @@
             </a>
             <p>Mon espace</p>
             <a href="#">
-                <i class="fa-solid fa-arrow-right-from-bracket log_out"></i>
+                <i class="fa-solid fa-arrow-right-from-bracket log_out" id="logoutButon"></i>
             </a>
         </div>
 
@@ -87,10 +88,10 @@
                 <div class="podium_container">
                     <div class="podium2">
                         <img src="assets/img/profile.png" alt="">
-                        <p class="name">Nom</p>
+                        <p class="name">?</p>
                         <div class="design_podium2">
                             <p class="rang">2</p>
-                            <p class="score">300</p>
+                            <p class="score">?J</p>
                         </div>
                     </div>
                     <div class="podium1">
@@ -99,18 +100,19 @@
                         <p class="name">Nom</p>
                         <div class="design_podium1">
                             <p class="rang">1</p>
-                            <p class="score">350</p>
+                            <p class="score"></p>
                         </div>
                     </div>
                     <div class="podium3">
                         <img src="assets/img/profile.png" alt="">
-                        <p class="name">Nom</p>
+                        <p class="name">?</p>
                         <div class="design_podium3">
                             <p class="rang">3</p>
-                            <p class="score">260</p>
+                            <p class="score">?J</p>
                         </div>
                     </div>
                 </div>
+                <div class="under_podium"></div>
             </div>
         </div>
     </div>

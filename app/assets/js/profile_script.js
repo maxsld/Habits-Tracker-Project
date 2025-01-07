@@ -13,6 +13,26 @@ document.addEventListener("DOMContentLoaded", function () {
   const tabs = document.querySelectorAll(".profile__tab");
   const contents = document.querySelectorAll(".profile__tabs-content > div");
 
+  const logoutButton = document.getElementById("logoutButon");
+
+  logoutButton.addEventListener('click', () => {
+    // Fonction pour supprimer tous les cookies
+    const deleteAllCookies = () => {
+      const cookies = document.cookie.split("; ");
+      for (const cookie of cookies) {
+        const cookieName = cookie.split("=")[0];
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+      }
+    };
+
+    // Supprimer les cookies
+    deleteAllCookies();
+
+    // Rediriger l'utilisateur (facultatif)
+    window.location.href = "/app/home.html"; // Par exemple, redirige vers la page de connexion
+  });
+
+
   // Fonction pour changer d'onglet
   function changeTab(event) {
     const target = event.target;
@@ -63,9 +83,8 @@ fetch("http://localhost:5000/api/getUserInfo", {
     return response.json();
   })
   .then((data) => {
-
-    const codamiDiv = document.getElementById("codami")
-    const codami = data.codami
+    const codamiDiv = document.getElementById("codami");
+    const codami = data.codami;
     codamiDiv.textContent = codami;
 
     const progressRank = document.getElementById("progressRank");
@@ -74,18 +93,24 @@ fetch("http://localhost:5000/api/getUserInfo", {
     let progressColor;
 
     if (data.streak <= 30) {
-        progressColor = "#FF7F00"; // Orange
+      progressColor = "#FF7F00"; // Orange
     } else if (data.streak <= 60) {
-        progressColor = "#FFBB00"; // Jaune
+      progressColor = "#FFBB00"; // Jaune
     } else if (data.streak <= 90) {
-        progressColor = "#3AC20D"; // Vert
+      progressColor = "#3AC20D"; // Vert
     } else {
-        progressColor = "#AF2BDF"; // Violet
+      progressColor = "#AF2BDF"; // Violet
     }
-
 
     progressRank.style.setProperty("--progress-width", `${progressPourcent}%`);
     progressRank.style.setProperty("--progress-color", progressColor);
+
+    const friendsList = [];
+
+    friendsList.push({
+      name: `${data.firstName}`,
+      streak: data.streak,
+    });
 
     const programDayContainer = document.getElementById("profile__friends");
     if (programDayContainer && data.friends) {
@@ -106,6 +131,58 @@ fetch("http://localhost:5000/api/getUserInfo", {
           .then((data) => {
             const habitCard = document.createElement("div");
             habitCard.classList.add("program_card_container");
+
+            friendsList.push({
+              name: `${data.firstName}`,
+              streak: data.streak,
+            });
+
+            friendsList.sort((a, b) => b.streak - a.streak);
+
+            // Afficher les 3 premiers dans le podium
+            const podiumContainer = document.querySelector(".podium_container");
+
+            // Vérifier qu'il y a bien au moins 3 amis
+            const topThreeFriends = friendsList.slice(0, 3);
+
+            // Mettre à jour les trois positions du podium
+            topThreeFriends.forEach((friend, index) => {
+              const podiumPos = index + 1;
+              const podiumElement = document.querySelector(
+                `.podium${podiumPos}`
+              );
+
+              if (podiumElement) {
+                const nameElement = podiumElement.querySelector(".name");
+                const scoreElement = podiumElement.querySelector(".score");
+                const rangElement = podiumElement.querySelector(".rang");
+
+                nameElement.textContent = friend.name;
+                scoreElement.textContent = `${friend.streak}J`;
+                rangElement.textContent = podiumPos;
+              }
+            });
+
+            const underPodiumContainer =
+              document.querySelector(".under_podium");
+            const nextTwoFriends = friendsList.slice(3, 5); // Sélectionner les 4ème et 5ème
+
+            nextTwoFriends.forEach((friend, index) => {
+              const rank = index + 4; // 4 pour le premier ami ici, 5 pour le suivant
+              const card = document.createElement("div");
+              card.classList.add("under_podium_card");
+
+              card.innerHTML = `
+          <div class="under_podium_card_name">
+            <p class="under_podium_card_rank">${rank}</p>
+            <img src="assets/img/profile.png" alt="">
+            <p>${friend.name}</p>
+          </div>
+          <p class="under_podium_card_stat">${friend.streak}J</p>
+        `;
+
+              underPodiumContainer.appendChild(card);
+            });
 
             habitCard.innerHTML = `
                   <div class="program_card">
@@ -212,49 +289,50 @@ fetch("http://localhost:5000/api/getUserInfo", {
     console.error("Error fetching user info:", error);
   });
 
-
-  document.getElementById('link_rang').addEventListener('click', function (event) {
+document
+  .getElementById("link_rang")
+  .addEventListener("click", function (event) {
     event.preventDefault(); // Empêcher la redirection par défaut
-    localStorage.setItem('activeTab', 'rang-tab'); // Stocker l'ID de l'onglet à activer
-    window.location.href = 'profile.html'; // Rediriger vers profile.html ou la page que vous souhaitez
+    localStorage.setItem("activeTab", "rang-tab"); // Stocker l'ID de l'onglet à activer
+    window.location.href = "profile.html"; // Rediriger vers profile.html ou la page que vous souhaitez
   });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const tabs = document.querySelectorAll(".profile__tab");
-    const contents = document.querySelectorAll(".profile__tabs-content > div");
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll(".profile__tab");
+  const contents = document.querySelectorAll(".profile__tabs-content > div");
 
-    // Fonction pour changer d'onglet
-    function changeTab(event) {
-      const target = event.target;
+  // Fonction pour changer d'onglet
+  function changeTab(event) {
+    const target = event.target;
 
+    tabs.forEach((tab) => tab.classList.remove("active"));
+    contents.forEach((content) => content.classList.remove("active"));
+
+    target.classList.add("active");
+    const index = Array.from(tabs).indexOf(target);
+    contents[index].classList.add("active");
+  }
+
+  // Activer l'onglet spécifié dans localStorage
+  const activeTabId = localStorage.getItem("activeTab");
+  if (activeTabId) {
+    const activeTab = document.getElementById(activeTabId);
+    if (activeTab) {
+      // Activer l'onglet
       tabs.forEach((tab) => tab.classList.remove("active"));
       contents.forEach((content) => content.classList.remove("active"));
 
-      target.classList.add("active");
-      const index = Array.from(tabs).indexOf(target);
-      contents[index].classList.add("active");
-    }
-
-    // Activer l'onglet spécifié dans localStorage
-    const activeTabId = localStorage.getItem("activeTab");
-    if (activeTabId) {
-      const activeTab = document.getElementById(activeTabId);
-      if (activeTab) {
-        // Activer l'onglet
-        tabs.forEach((tab) => tab.classList.remove("active"));
-        contents.forEach((content) => content.classList.remove("active"));
-
-        activeTab.classList.add("active");
-        const index = Array.from(tabs).indexOf(activeTab);
-        if (index >= 0) {
-          contents[index].classList.add("active");
-        }
+      activeTab.classList.add("active");
+      const index = Array.from(tabs).indexOf(activeTab);
+      if (index >= 0) {
+        contents[index].classList.add("active");
       }
-      localStorage.removeItem("activeTab"); // Nettoyer le stockage après utilisation
     }
+    localStorage.removeItem("activeTab"); // Nettoyer le stockage après utilisation
+  }
 
-    // Ajouter des écouteurs pour les clics sur les onglets
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", changeTab);
-    });
+  // Ajouter des écouteurs pour les clics sur les onglets
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", changeTab);
   });
+});
