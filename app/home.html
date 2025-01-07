@@ -27,15 +27,34 @@
         <a href="profile.html"><img src="assets/img/profile.png" alt="" srcset=""></a>
     </div>
 
+
+
     <p class="title"></p>
     <p class="subtitle">Prêt pour devenir meilleur que hier ?</p>
-    <div class="graph_container"><p class="graph" id="emojiDay"></p></div>
+    <div class="graph_container"><p class="graph" id="emojiDay"></p>
+        <div class="progress-container">
+            <svg width="250" height="250" viewBox="0 0 250 250" class="progress-circle">
+                <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color: rgb(0, 255, 0); stop-opacity: 1" />
+                        <stop offset="100%" style="stop-color: red; stop-opacity: 1" />
+                    </linearGradient>
+                </defs>
+                <circle cx="125" cy="125" r="120" class="circle-background" />
+                <circle cx="125" cy="125" r="120" class="circle-progress" />
+            </svg>
+        </div>
+    
+    </div>
     <div class="program_day" id="program_day">
         <div class="header_program_day">
             <p class="title">Programme de la journée</p>
             <a href="#" id="see_all_program"><i class="fa-solid fa-arrow-up"></i></a>
         </div>
     </div>
+
+
+    
 
 
     <div class="navbar">
