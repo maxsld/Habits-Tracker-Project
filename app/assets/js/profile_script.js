@@ -69,11 +69,11 @@ fetch("http://localhost:5000/api/getUserInfo", {
 
     let progressColor;
 
-    if (progressPourcent <= 30) {
+    if (data.streak <= 30) {
         progressColor = "#FF7F00"; // Orange
-    } else if (progressPourcent <= 60) {
+    } else if (data.streak <= 60) {
         progressColor = "#FFBB00"; // Jaune
-    } else if (progressPourcent <= 90) {
+    } else if (data.streak <= 90) {
         progressColor = "#3AC20D"; // Vert
     } else {
         progressColor = "#AF2BDF"; // Violet
