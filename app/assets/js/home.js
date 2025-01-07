@@ -251,6 +251,16 @@ fetch("http://localhost:5000/api/getUserInfo", {
               status: true,
             }),
           });
+
+          await fetch("http://localhost:5000/api/saveHistory", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+            }),
+          });
         });
 
         const crossButton = habitCard.querySelector(".cross");
@@ -265,6 +275,15 @@ fetch("http://localhost:5000/api/getUserInfo", {
               userId,
               habitName: habit.habitName,
               status: false,
+            }),
+          });
+          await fetch("http://localhost:5000/api/saveHistory", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
             }),
           });
         });

@@ -184,3 +184,90 @@
     color: #ffffff;
     font-size: 1.3rem;
 }
+
+.program_card_container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+.program_card {
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    padding: 20px;
+    margin-top: 1rem;
+    background-color: #fdfdfd;
+    overflow: hidden;
+    transition: transform 0.3s ease; /* Animation de la carte */
+}
+
+.program_card .title {
+    font-size: 1rem;
+    margin-top: 0rem;
+}
+
+.icon-container-main {
+    display: flex; /* Alignement des icônes côte à côte */
+    gap: 10px; /* Espace entre les icônes */
+    position: absolute;
+    top: 58%;
+    transform: translateY(-50%);
+    right: -50px; /* Les icônes sont placées initialement à droite */
+    transition: right 0.3s ease; /* Animation de l'apparition des icônes */
+}
+
+/* Icône individuelle */
+.icon-container {
+    font-size: 24px;
+    padding: 15px;
+    border-radius: 1rem;
+    display: none; /* Les icônes sont cachées au départ */
+    transition: transform 0.3s ease; /* Animation de la carte */
+}
+
+/* Icône "Check" */
+.icon-container.check {
+    background-color: #3AC20D; /* Vert */
+    color: #fff;
+    padding: 20px;
+}
+
+/* Icône "Delete" */
+.icon-container.delete {
+    background-color: var(--global_secondary_color); /* Rouge */
+    color: #fff;
+    padding: 20px;
+}
+
+/* Icône "Cross" */
+.icon-container.cross {
+    background-color: #FF4C4C; /* Orange */
+    color: #fff;
+    padding: 20px;
+}
+
+/* Lors du glissement vers la gauche */
+.program_card_container.swiped .icon-container-main {
+    right: -220px; /* Déplace le conteneur d'icônes vers la droite */
+    transition: transform 0.3s ease; /* Animation de la carte */
+}
+
+.program_card_container.swiped .icon-container {
+    display: block; /* Affiche chaque icône */
+    transform: translateX(0); /* Animation des icônes */
+}
+
+
+/* Glissement de la carte */
+.program_card_container.swiped {
+    transform: translateX(-200px); /* La carte glisse vers la gauche */
+    transition: transform 0.3s ease-in; /* Animation de la carte */
+}
+
+/* Retour de la carte à la position d'origine */
+.program_card_container.swiped-back {
+    transform: translateX(0px); /* La carte glisse vers la droite */
+    transition: transform 0.3s ease; /* Animation de la carte */
+}
