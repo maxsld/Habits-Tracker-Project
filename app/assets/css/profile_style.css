@@ -35,9 +35,18 @@
     position: relative;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 1rem 0;
+}
+
+.profile__img p {
+    font-size: .75rem;
+}
+
+#codami {
+    font-weight: 800;
 }
 
 .profile__tabs {
