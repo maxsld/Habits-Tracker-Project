@@ -358,3 +358,15 @@ fetch("http://localhost:5000/api/getUserInfo", {
     localStorage.setItem('activeTab', 'friends-tab'); // Stocker l'ID de l'onglet à activer
     window.location.href = 'profile.html'; // Rediriger vers profile.html
 });
+
+// Simulate page load
+window.addEventListener('load', function () {
+  // Keep the loader visible for 1 second
+  setTimeout(function () {
+      // Hide the loader
+      document.body.classList.add('loaded');
+
+      // Show the content
+      document.getElementById('content').style.display = 'block';
+  }, 750); // 1 second delay
+});

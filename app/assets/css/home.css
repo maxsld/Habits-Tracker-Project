@@ -7,6 +7,42 @@ body {
     overflow-x: hidden;
 }
 
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 7px solid rgba(0, 0, 0, 0.1);
+    border-top: 7px solid var(--global_primary_color);
+    border-radius: 50%;
+    animation: spin .75s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Hide the loader after it's done */
+body.loaded #loader {
+    display: none;
+}
+
 .header {
     display: flex;
     align-items: center;
@@ -107,14 +143,22 @@ body {
     background-color: #fdfdfd;
     overflow: hidden;
     transition: transform 0.3s ease; /* Animation de la carte */
+    text-transform: capitalize;
 }
 
 .status-true {
-    background-color: green;
+    background-color: var(--global_green_color);
+    font-weight: 600;
+}
+
+.status-true p, .status-false p{
+    color: #fff;
+    text-transform: capitalize;
 }
 
 .status-false {
-    background-color: red;
+    background-color: var(--global_red_color);
+    font-weight: 600;
 }
 
 .program_card .title {
