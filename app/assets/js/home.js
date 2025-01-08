@@ -157,7 +157,7 @@ const feeling_today_page = document.getElementById("feeling_today_page");
 
 validateBtn.addEventListener("click", async () => {
   const selectedEmoji = emojis[currentIndex].textContent;
-  
+
   // Envoi de la requête POST pour sauvegarder l'emoji sélectionné
   await fetch("http://localhost:5000/api/saveEmoji", {
     method: "POST",
@@ -256,6 +256,16 @@ fetch("http://localhost:5000/api/getUserInfo", {
               habitName: habit.habitName,
             }),
           });
+
+          await fetch("http://localhost:5000/api/saveHistory", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+            }),
+          });
         });
 
         const checkButton = habitCard.querySelector(".check");
@@ -284,6 +294,15 @@ fetch("http://localhost:5000/api/getUserInfo", {
           } catch (error) {
             console.error("Erreur réseau :", error);
           }
+          await fetch("http://localhost:5000/api/saveHistory", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+            }),
+          });
         });
 
         const crossButton = habitCard.querySelector(".cross");
@@ -312,6 +331,15 @@ fetch("http://localhost:5000/api/getUserInfo", {
           } catch (error) {
             console.error("Erreur réseau :", error);
           }
+          await fetch("http://localhost:5000/api/saveHistory", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+            }),
+          });
         });
 
 

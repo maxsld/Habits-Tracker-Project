@@ -87,6 +87,9 @@ fetch("http://localhost:5000/api/getUserInfo", {
     const codami = data.codami;
     codamiDiv.textContent = codami;
 
+    const profileStreakP = document.getElementById("profileStreak");
+    profileStreakP.textContent = data.streak + "J";
+
     const progressRank = document.getElementById("progressRank");
     const progressPourcent = (data.streak * 100) / 90; // Calculate the percentage
 

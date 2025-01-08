@@ -27,7 +27,6 @@ const client = new MongoClient(uri);
 // Connect to MongoDB and return the 'users' collection
 async function connectToDb() {
   await client.connect();
-  console.log("Connected to MongoDB");
   return client.db("maxens-baptiste").collection("users");
 }
 
@@ -151,7 +150,6 @@ app.post("/api/verifyToken", async (req, res) => {
         })
       );
 
-      console.log("Comparison results:", results);
       const tokenExists = results.some(Boolean);
 
       if (tokenExists) {
@@ -454,83 +452,113 @@ app.post("/api/addFriends", async (req, res) => {
 
 // POST route to save user's history
 app.post("/api/saveHistory", async (req, res) => {
-    const { userId } = req.body;
+  const { userId } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ error: "User ID is missing" });
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is missing" });
+  }
+
+  // Récupérer la date actuelle au format "YYYY-MM-DD"
+  let currentDate = new Date().toISOString().split("T")[0];
+
+  try {
+    const usersCollection = await connectToDb();
+
+    // Trouver l'utilisateur dans la base de données
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    const currentDate = new Date().toISOString().split("T")[0];
+    // Récupérer les habitudes de l'utilisateur
+    const habits = user.habits || [];
+    const totalHabits = habits.length;
+    const completedHabits = habits.filter(
+      (habit) => habit.habitStatus === true
+    ).length;
 
-    try {
-      const usersCollection = await connectToDb();
+    if (totalHabits === 0) {
+      return res.status(400).json({ error: "No habits found for this user" });
+    }
 
-      // Trouver l'utilisateur et ses habitudes
-      const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    // Calculer le dailyScore en pourcentage
+    const dailyScore = Math.round((completedHabits / totalHabits) * 100);
 
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
+    // Calcul du streak
+    let streak = 0;
+    let currentStreak = 1; // Initialise à 1 pour inclure le jour actuel
+
+    if (user.history && user.history.length > 0) {
+      // Trier l'historique par date
+      const sortedHistory = [...user.history].sort(
+        (a, b) => new Date(a.date) - new Date(b.date)
+      );
+
+      // Vérifier les jours consécutifs dans l'historique
+      for (let i = sortedHistory.length - 1; i >= 0; i--) {
+        const historyItem = sortedHistory[i];
+        const historyDate = historyItem.date;
+        const historyScore = historyItem.dailyScore;
+
+        const diffInDays =
+          (new Date(currentDate) - new Date(historyDate)) /
+          (1000 * 60 * 60 * 24);
+
+        if (diffInDays === 1 && historyScore > 50) {
+          currentStreak++;
+          currentDate = historyDate; // Mettre à jour la date actuelle pour vérifier le prochain jour
+        } else if (diffInDays > 1) {
+          break; // Arrêter si la différence dépasse 1 jour
+        }
       }
+    }
 
-      const habits = user.habits || []; // Suppose que les habitudes de l'utilisateur sont stockées dans un tableau "habits"
+    // Si le score actuel est > 50, ajouter 1 au streak
+    if (dailyScore > 50) {
+      streak = currentStreak;
+    }
 
-      const totalHabits = habits.length;
-      const completedHabits = habits.filter(habit => habit.habitStatus === true).length;
+    // Vérifier si le jour actuel est déjà dans l'historique
+    const isTodayInHistory = user.history?.some(
+      (history) => history.date === currentDate
+    );
 
-      if (totalHabits === 0) {
-        return res.status(400).json({ error: "No habits found for this user" });
-      }
-
-      // Calculer le dailyScore en pourcentage
-      const dailyScore = Math.round((completedHabits / totalHabits) * 100);
-
-      // Incrémenter ou réinitialiser le streak
-      const lastHistoryDate = user.history?.length > 0 ? user.history[user.history.length - 1].date : null;
-      const isConsecutive = lastHistoryDate && new Date(currentDate) - new Date(lastHistoryDate) === 86400000;
-      const streak = isConsecutive ? (user.streak || 0) + 1 : 1;
-
-      console.log(dailyScore);
-      console.log(streak);
-
-      // Remplacer ou ajouter l'entrée d'historique pour la date actuelle
-      const updatedUser = await usersCollection.updateOne(
-        { _id: new ObjectId(userId), "history.date": currentDate }, // Vérifie si une entrée avec la même date existe
+    if (!isTodayInHistory) {
+      // Ajouter une nouvelle entrée si le jour actuel n'existe pas dans l'historique
+      await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        {
+          $push: { history: { date: currentDate, dailyScore } }, // Ajouter l'entrée quotidienne
+          $set: { streak }, // Mettre à jour le streak global
+        }
+      );
+    } else {
+      // Mettre à jour l'entrée existante si elle existe
+      await usersCollection.updateOne(
+        { _id: new ObjectId(userId), "history.date": currentDate },
         {
           $set: {
-            "history.$.dailyScore": dailyScore, // Met à jour le dailyScore de l'entrée existante
-            streak, // Met à jour le streak
+            "history.$.dailyScore": dailyScore, // Mettre à jour le score quotidien
+            streak, // Mettre à jour le streak global
           },
         }
       );
-
-      if (updatedUser.matchedCount === 0) {
-        // Si aucune entrée existante n'a été mise à jour, ajouter une nouvelle entrée
-        const newHistoryUpdate = await usersCollection.updateOne(
-          { _id: new ObjectId(userId) },
-          {
-            $push: { history: { date: currentDate, dailyScore } }, // Ajouter l'entrée quotidienne
-            $set: { streak }, // Mettre à jour le streak
-          }
-        );
-
-        if (newHistoryUpdate.matchedCount === 0) {
-          return res.status(500).json({ error: "Failed to update user's history" });
-        }
-      }
-
-      // Répondre avec un message de succès
-      return res.status(200).json({
-        message: "History saved successfully",
-        dailyScore,
-        streak,
-      });
-    } catch (error) {
-      console.error("Error saving user's history:", error);
-      return res
-        .status(500)
-        .json({ error: "An error occurred while saving user's history" });
     }
-  });
+
+    // Répondre avec succès
+    return res.status(200).json({
+      message: "History saved successfully",
+      dailyScore,
+      streak,
+    });
+  } catch (error) {
+    console.error("Error saving user's history:", error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while saving user's history" });
+  }
+});
 
 // Start the server
 app.listen(port, () => {
