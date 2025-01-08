@@ -54,5 +54,5 @@ Pour exécuter ce projet, vous aurez besoin :
 Ce projet est sous **licence MIT** – consultez le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ## Auteurs
-- **SOLDAN Maxens** - *Développeur principal* - [VotreGitHub](https://github.com/votre-utilisateur)
-- **RENAND Baptiste** - *Développeur principal* - [VotreGitHub](https://github.com/votre-utilisateur)
+- **SOLDAN Maxens** - *Développeur principal* - [https://github.com/maxsld](https://github.com/maxsld)
+- **RENAND Baptiste** - *Développeur principal* - [https://github.com/baptiste-rnd](https://github.com/baptiste-rnd)
