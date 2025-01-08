@@ -35,7 +35,7 @@ Pour exécuter ce projet, vous aurez besoin :
    ```
 5. Ouvrez le répertoire racine du projet avec VSCODE et ouvrez la page `index.html` avec LiveServer (situé dans le dossier app).
    - Assurez-vous que le LiveServer s'éxécute sur le port 5500 de votre machine.
-   - Notre application est concue UNIQUEMENT pour mobile.
+   - Notre application est conçue UNIQUEMENT pour les appareils mobiles et doit être visualisée en utilisant l'outil d'inspection du navigateur pour simuler une vue mobile.
 
 ## Structure du Projet
 - **index.html** : La page principale de l’application.
