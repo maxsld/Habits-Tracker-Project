@@ -14,18 +14,28 @@ Cette application web est développée en utilisant les technologies HTML, CSS e
 ## Prérequis
 Pour exécuter ce projet, vous aurez besoin :
 - D’un navigateur web récent et compatible.
-- Aucune installation supplémentaire n’est nécessaire, car le projet repose sur des technologies côté client (HTML, CSS, JS).
+- D'installation les modules NodeJS, car le projet utilise une API NodeJS.
 
 ## Installation
 1. Clonez le dépôt sur votre machine locale :
    ```bash
-   git clone https://github.com/votre-utilisateur/habit-tracker.git
+   git clone https://github.com/maxsld/Habits-Tracker-Project.git
    ```
-2. Naviguez vers le répertoire du projet :
+2. Naviguez vers le répertoire du projet et entrez dans le dossier server :
    ```bash
-   cd habit-tracker
+   cd Habits-Tracker-Project\server
    ```
-3. Ouvrez `index.html` dans votre navigateur.
+3. Executer la commande suivante pour installer les différents modules NodeJS :
+   ```bash
+   npm install
+   ```
+4. Executer ensuite l'application NodeJS :
+   ```bash
+   node server.js
+   ```
+5. Ouvrez le répertoire racine du projet avec VSCODE et ouvrez la page `index.html` avec LiveServer (situé dans le dossier app).
+   - Assurez-vous que le LiveServer s'éxécute sur le port 5500 de votre machine.
+   - Notre application est concue UNIQUEMENT pour mobile.
 
 ## Structure du Projet
 - **index.html** : La page principale de l’application.
@@ -34,7 +44,7 @@ Pour exécuter ce projet, vous aurez besoin :
 - **assets/** : Un dossier pour les images et ressources supplémentaires.
 
 ## Utilisation
-1. Ouvrez l’application dans votre navigateur.
+1. Ouvrez l’application.
 2. Cliquez sur « Ajouter une habitude » pour créer une nouvelle entrée.
 3. Cochez les cases correspondant aux jours où vous avez réalisé vos habitudes.
 4. Consultez la section des statistiques pour suivre votre progression.
