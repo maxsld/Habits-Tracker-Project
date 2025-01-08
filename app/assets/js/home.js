@@ -9,48 +9,55 @@ function getCookieValue(name) {
 
 const userId = getCookieValue("userId");
 
-document.getElementById("newHabitForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
+document
+  .getElementById("newHabitForm")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  const habitName = document.getElementById("habit-name").value.toLowerCase();
-  const habitDescription = document.getElementById("habit-description").value.toLowerCase();
-  const habitCategory = document.getElementById("habit-category").value.toLowerCase();
-  const submitButton = document.getElementById("submit-btn");
+    const habitName = document.getElementById("habit-name").value.toLowerCase();
+    const habitDescription = document
+      .getElementById("habit-description")
+      .value.toLowerCase();
+    const habitCategory = document
+      .getElementById("habit-category")
+      .value.toLowerCase();
+    const submitButton = document.getElementById("submit-btn");
 
-  // Fonction pour ajouter un délai
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    // Fonction pour ajouter un délai
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // Afficher l'icône de chargement sur le bouton
-  submitButton.innerHTML = '<i class="fa-solid fa-spinner loading-icon"></i> Chargement';
+    // Afficher l'icône de chargement sur le bouton
+    submitButton.innerHTML =
+      '<i class="fa-solid fa-spinner loading-icon"></i> Chargement';
 
-  // Attendre 1,5 secondes avant de mettre à jour le bouton avec l'icône de succès
-  await delay(2000);
+    // Attendre 1,5 secondes avant de mettre à jour le bouton avec l'icône de succès
+    await delay(2000);
 
-  // Mettre à jour le texte du bouton avec l'icône de validation
-  submitButton.innerHTML = '<i class="fa-solid fa-check"></i> Terminé';
-  submitButton.style.backgroundColor="green";
+    // Mettre à jour le texte du bouton avec l'icône de validation
+    submitButton.innerHTML = '<i class="fa-solid fa-check"></i> Terminé';
+    submitButton.style.backgroundColor = "green";
 
-  // Attendre 1 seconde avant de revenir à l'état normal du bouton
-  await delay(2000);
+    // Attendre 1 seconde avant de revenir à l'état normal du bouton
+    await delay(2000);
 
-  // Réinitialiser l'état du bouton
-  submitButton.innerHTML = 'Ajouter une nouvelle habitude';
-  submitButton.style.backgroundColor="";
+    // Réinitialiser l'état du bouton
+    submitButton.innerHTML = "Ajouter une nouvelle habitude";
+    submitButton.style.backgroundColor = "";
 
-  // Envoyer la requête POST à l'API
-  await fetch("http://localhost:5000/api/newHabit", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      userId,
-      habitName,
-      habitDescription,
-      habitCategory,
-    }),
+    // Envoyer la requête POST à l'API
+    await fetch("http://localhost:5000/api/newHabit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        habitName,
+        habitDescription,
+        habitCategory,
+      }),
+    });
   });
-});
 
 document.getElementById("open_add_page").addEventListener("click", function () {
   document.getElementById("add_page").classList.toggle("show_add_page");
@@ -151,33 +158,32 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCarousel();
 
   // Ajouter l'événement de clic pour le bouton de validation
- // Ajouter l'événement de clic pour le bouton de validation
-const validateBtn = document.getElementById("validate-btn-emoji");
-const feeling_today_page = document.getElementById("feeling_today_page");
+  // Ajouter l'événement de clic pour le bouton de validation
+  const validateBtn = document.getElementById("validate-btn-emoji");
+  const feeling_today_page = document.getElementById("feeling_today_page");
 
-validateBtn.addEventListener("click", async () => {
-  const selectedEmoji = emojis[currentIndex].textContent;
+  validateBtn.addEventListener("click", async () => {
+    const selectedEmoji = emojis[currentIndex].textContent;
 
-  // Envoi de la requête POST pour sauvegarder l'emoji sélectionné
-  await fetch("http://localhost:5000/api/saveEmoji", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      userId,
-      emojiDay: selectedEmoji,
-    }),
+    // Envoi de la requête POST pour sauvegarder l'emoji sélectionné
+    await fetch("http://localhost:5000/api/saveEmoji", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        emojiDay: selectedEmoji,
+      }),
+    });
+
+    // Masquer la page de sélection des émotions
+    feeling_today_page.style.display = "none";
+
+    // Recharger la page après l'envoi de la requête
+    window.location.reload();
   });
-
-  // Masquer la page de sélection des émotions
-  feeling_today_page.style.display = "none";
-
-  // Recharger la page après l'envoi de la requête
-  window.location.reload();
-})
 });
-
 
 fetch("http://localhost:5000/api/getUserInfo", {
   method: "POST",
@@ -193,6 +199,27 @@ fetch("http://localhost:5000/api/getUserInfo", {
     return response.json();
   })
   .then((data) => {
+    // Exemple : dailyScore en pourcentage (par exemple 25% ou 75%)
+    const lastHistoryItem = data.history[data.history.length - 1]; // Dernier élément de l'historique
+    const dailyScore = lastHistoryItem.dailyScore; // Le score quotidien (en %)
+
+    // Récupérer le cercle SVG
+    const circle = document.querySelector(".circle-progress");
+
+    // Définir le rayon de votre cercle (ici rayon = 120)
+    const radius = 120; // Rayon du cercle
+
+    // Calculer la circonférence du cercle en fonction du rayon
+    const circleCircumference = 2 * Math.PI * radius; // 2πr
+
+    // Calculer la portion à afficher en fonction du dailyScore
+    const dashArrayValue = circleCircumference; // Circonférence totale
+    const dashOffsetValue = (1 - dailyScore / 100) * circleCircumference; // Portion masquée du cercle
+
+    // Appliquer dynamiquement le stroke-dasharray et stroke-dashoffset
+    circle.style.strokeDasharray = dashArrayValue;
+    circle.style.strokeDashoffset = dashOffsetValue;
+
     const feeling_today_page = document.getElementById("feeling_today_page");
     if (data.emojiChecked) {
       feeling_today_page.style.display = "none";
@@ -272,17 +299,20 @@ fetch("http://localhost:5000/api/getUserInfo", {
         checkButton.addEventListener("click", async () => {
           try {
             // Requête pour mettre le statut de l'habitude en "check"
-            const response = await fetch("http://localhost:5000/api/updateHabit", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                userId,
-                habitName: habit.habitName,
-                status: true,
-              }),
-            });
+            const response = await fetch(
+              "http://localhost:5000/api/updateHabit",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  userId,
+                  habitName: habit.habitName,
+                  status: true,
+                }),
+              }
+            );
 
             // Vérification que la requête a réussi
             if (response.ok) {
@@ -309,17 +339,20 @@ fetch("http://localhost:5000/api/getUserInfo", {
         crossButton.addEventListener("click", async () => {
           try {
             // Requête pour mettre le statut de l'habitude en "check"
-            const response = await fetch("http://localhost:5000/api/updateHabit", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                userId,
-                habitName: habit.habitName,
-                status: false,
-              }),
-            });
+            const response = await fetch(
+              "http://localhost:5000/api/updateHabit",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  userId,
+                  habitName: habit.habitName,
+                  status: false,
+                }),
+              }
+            );
 
             // Vérification que la requête a réussi
             if (response.ok) {
@@ -342,85 +375,86 @@ fetch("http://localhost:5000/api/getUserInfo", {
           });
         });
 
+        document.querySelectorAll(".program_card_container").forEach((card) => {
+          let startX = 0,
+            currentX = 0;
 
-      document.querySelectorAll(".program_card_container").forEach((card) => {
-        let startX = 0,
-          currentX = 0;
+          // Événements tactiles
+          card.addEventListener("touchstart", (e) => {
+            startX = e.touches[0].clientX;
+          });
 
-        // Événements tactiles
-        card.addEventListener("touchstart", (e) => {
-          startX = e.touches[0].clientX;
-        });
+          card.addEventListener("touchmove", (e) => {
+            currentX = e.touches[0].clientX;
+            const deltaX = currentX - startX;
 
-        card.addEventListener("touchmove", (e) => {
-          currentX = e.touches[0].clientX;
-          const deltaX = currentX - startX;
+            if (deltaX < -30) {
+              // Si glissement vers la gauche dépasse 30px
+              card.classList.add("swiped");
+              card.classList.remove("swiped-back");
+            } else if (deltaX > 30) {
+              // Si glissement vers la droite dépasse 30px
+              card.classList.add("swiped-back");
+              card.classList.remove("swiped");
+            }
 
-          if (deltaX < -30) {
-            // Si glissement vers la gauche dépasse 30px
-            card.classList.add("swiped");
-            card.classList.remove("swiped-back");
-          } else if (deltaX > 30) {
-            // Si glissement vers la droite dépasse 30px
-            card.classList.add("swiped-back");
-            card.classList.remove("swiped");
-          }
+            e.preventDefault();
+          });
 
-          e.preventDefault();
-        });
+          card.addEventListener("touchend", () => {
+            // Rien à faire ici pour l'instant
+          });
 
-        card.addEventListener("touchend", () => {
-          // Rien à faire ici pour l'instant
-        });
+          // Événements souris
+          card.addEventListener("mousedown", (e) => {
+            startX = e.clientX;
+            e.preventDefault();
+          });
 
-        // Événements souris
-        card.addEventListener("mousedown", (e) => {
-          startX = e.clientX;
-          e.preventDefault();
-        });
+          card.addEventListener("mousemove", (e) => {
+            if (startX === 0) return;
 
-        card.addEventListener("mousemove", (e) => {
-          if (startX === 0) return;
+            currentX = e.clientX;
+            const deltaX = currentX - startX;
 
-          currentX = e.clientX;
-          const deltaX = currentX - startX;
+            if (deltaX < -30) {
+              card.classList.add("swiped");
+              card.classList.remove("swiped-back");
+            } else if (deltaX > 30) {
+              card.classList.add("swiped-back");
+              card.classList.remove("swiped");
+            }
 
-          if (deltaX < -30) {
-            card.classList.add("swiped");
-            card.classList.remove("swiped-back");
-          } else if (deltaX > 30) {
-            card.classList.add("swiped-back");
-            card.classList.remove("swiped");
-          }
+            e.preventDefault();
+          });
 
-          e.preventDefault();
-        });
-
-        card.addEventListener("mouseup", () => {
-          startX = 0;
+          card.addEventListener("mouseup", () => {
+            startX = 0;
+          });
         });
       });
-    })}
+    }
   })
   .catch((error) => {
     console.error("Error fetching user info:", error);
   });
 
-
-  document.getElementById('link_friends_tab').addEventListener('click', function (event) {
+document
+  .getElementById("link_friends_tab")
+  .addEventListener("click", function (event) {
     event.preventDefault(); // Empêcher la redirection par défaut
-    localStorage.setItem('activeTab', 'friends-tab'); // Stocker l'ID de l'onglet à activer
-    window.location.href = 'profile.html'; // Rediriger vers profile.html
-});
+    localStorage.setItem("activeTab", "friends-tab"); // Stocker l'ID de l'onglet à activer
+    window.location.href = "profile.html"; // Rediriger vers profile.html
+  });
 
 // Simulate page load
-window.addEventListener('load', function () {
+window.addEventListener("load", function () {
   // Keep the loader visible for 1 second
   setTimeout(function () {
-      // Hide the loader
-      document.body.classList.add('loaded');
+    // Hide the loader
+    document.body.classList.add("loaded");
 
-      // Show the content
-      document.getElementById('content').style.display = 'block';
+    // Show the content
+    document.getElementById("content").style.display = "block";
   }, 750); // 1 second delay
 });

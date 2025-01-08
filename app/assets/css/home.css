@@ -121,7 +121,7 @@ body.loaded #loader {
     fill: none;
     stroke: url(#gradient);  /* Application du dégradé */
     stroke-width: 10;
-    stroke-dasharray: 760;
+    stroke-dasharray: 753.98;
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 0.3s ease;
 }

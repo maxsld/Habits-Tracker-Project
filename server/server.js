@@ -397,6 +397,7 @@ app.post("/api/getUserInfo", async (req, res) => {
       friends: user.friends,
       streak: user.streak,
       codami: user.codAmi,
+      history: user.history,
     });
   } catch (error) {
     console.error("Error fetching user info:", error);
