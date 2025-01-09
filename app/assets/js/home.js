@@ -200,8 +200,8 @@ fetch("http://localhost:5000/api/getUserInfo", {
   })
   .then((data) => {
     // Exemple : dailyScore en pourcentage (par exemple 25% ou 75%)
-    const lastHistoryItem = data.history[data.history.length - 1]; // Dernier élément de l'historique
-    const dailyScore = lastHistoryItem.dailyScore; // Le score quotidien (en %)
+    const lastHistoryItem = data.history.length > 0 ? data.history[data.history.length - 1] : { dailyScore: 0 };
+    const dailyScore = lastHistoryItem.dailyScore;
 
     // Récupérer le cercle SVG
     const circle = document.querySelector(".circle-progress");
